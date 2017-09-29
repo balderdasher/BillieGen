@@ -6,9 +6,15 @@
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <name>billie-gen</name>
+    <name>billiegen</name>
     <url>http://www.mrdios.com</url>
     <description>web project based on code gen</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+    </parent>
 
     <properties>
         <!-- version settings -->
@@ -16,6 +22,7 @@
         <!-- environment settings -->
         <jdk.version>1.8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <developers>
@@ -32,6 +39,16 @@
     </developers>
 
     <dependencies>
+        <!-- spring data jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- web开发支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!-- slf4j -->
         <!--<dependency>
             <groupId>org.slf4j</groupId>
@@ -56,10 +73,8 @@
         </dependency>
         <!-- test -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 
@@ -90,13 +105,18 @@
             </plugin>
 
             <!-- war打包插件,设定war包名称 -->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
                     <warName>${project.artifactId}</warName>
                 </configuration>
+            </plugin>-->
+            <!--spring boot 打包插件jar-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
