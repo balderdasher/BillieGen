@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+日志级别从高到低：
+    OFF(关闭日志功能)
+    FATAL(严重错误会导致程序退出)
+    ERROR(指出错误但不影响运行)
+    WARN(指出潜在错误)
+    INFO(普通输出信息)
+    DEBUG(调试信息)
+    TRACE(跟踪信息)
+    ALL(打开除OFF之外的日志)
+-->
+<!-- status参数用于设置log4j框架本身输出的信息级别 -->
+<Configuration status="INFO">
+    <Properties>
+        <Property name="logdir">log/out</Property>
+        <Property name="StdLogFileName">billiegen</Property>
+        <Property name="ConsolePattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %-l %logger{36} : %msg%n</Property>
+        <Property name="StdLogPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %-l %logger{36} : %msg%n</Property>
+    </Properties>
+
+    <!-- 日志输出配置 -->
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${ConsolePattern}"/>
+        </Console>
+
+        <!-- 输出到文件:每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <RollingFile name="billiegen" fileName="${logdir}/${StdLogFileName}.log"
+                     filePattern="${logdir}/%d{yyyy-MM}/${StdLogFileName}-%d{yyyy-MM-dd}.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${StdLogPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <!-- 日志配置 -->
+    <Loggers>
+        <!-- 默认输出形式-程序中没有在配置文件中指定logger的时候会按照默认设置输出 -->
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="billiegen" level="info" additivity="false">
+            <AppenderRef ref="billiegen"/>
+        </Logger>
+    </Loggers>
+</Configuration>
