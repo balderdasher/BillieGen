@@ -1,5 +1,10 @@
 package com.billiegen.common.framework.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.beans.Transient;
 import java.io.Serializable;
@@ -22,6 +27,9 @@ public class BaseEntity implements Serializable {
     /* 排列顺序 */
     protected Integer sortSeq;
 
+    @Id
+    @GeneratedValue(generator = "billiegen-uuid-generator")
+    @GenericGenerator(name = "billiegen-uuid-generator", strategy = "uuid")
     public String getId() {
         return id;
     }
@@ -30,6 +38,7 @@ public class BaseEntity implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "gmt_create", updatable = false)
     public Date getCreateDate() {
         return createDate;
     }
@@ -38,6 +47,7 @@ public class BaseEntity implements Serializable {
         this.createDate = createDate;
     }
 
+    @Column(name = "gmt_modified")
     public Date getModifyDate() {
         return modifyDate;
     }
@@ -59,6 +69,13 @@ public class BaseEntity implements Serializable {
         if (this.sortSeq == null) {
             this.sortSeq = 0;
         }
+        Date time = new Date();
+        if (this.createDate == null) {
+            this.createDate = time;
+        }
+        if (this.modifyDate == null) {
+            this.modifyDate = time;
+        }
     }
 
     @Transient
@@ -66,6 +83,7 @@ public class BaseEntity implements Serializable {
         if (this.sortSeq == null) {
             this.sortSeq = 0;
         }
+        this.modifyDate = new Date();
     }
 
     @Override
