@@ -20,6 +20,7 @@ import java.util.List;
  * @author CodePorter
  * @date 2017-10-11
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 public class BillieRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements BillieRepository<T, ID> {
     private final Class<T> clazz = super.getDomainClass();
     private final JpaEntityInformation<T, ?> entityInformation;
