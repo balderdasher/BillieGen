@@ -30,7 +30,6 @@ public class Admin extends BaseEntity {
     private String loginIp;
 
     @Column(nullable = false, unique = true)
-    @org.hibernate.annotations.Index()
     public String getUsername() {
         return username;
     }
