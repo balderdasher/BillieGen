@@ -3,10 +3,7 @@ package com.billiegen.system.entity;
 import com.billiegen.common.framework.entity.BaseEntity;
 import com.billiegen.system.enums.Sex;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -32,7 +29,8 @@ public class Admin extends BaseEntity {
     private Date loginDate;
     private String loginIp;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
+    @org.hibernate.annotations.Index()
     public String getUsername() {
         return username;
     }

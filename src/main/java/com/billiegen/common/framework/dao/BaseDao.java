@@ -1,6 +1,6 @@
 package com.billiegen.common.framework.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.billiegen.common.jpa.BillieRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
@@ -10,5 +10,5 @@ import java.io.Serializable;
  * @date 2017-09-29
  */
 @NoRepositoryBean
-public interface BaseDao<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface BaseDao<T, ID extends Serializable> extends BillieRepository<T, ID> {
 }
