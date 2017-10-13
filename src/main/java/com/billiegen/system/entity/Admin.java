@@ -13,6 +13,7 @@ import java.util.Date;
  * @date 2017-09-30
  */
 @Entity
+@Table(name = "sys_admin")
 public class Admin extends BaseEntity {
     private String username;
     private String password;

@@ -2,6 +2,7 @@ package com.billiegen.common.jpa.impl;
 
 import com.billiegen.common.framework.entity.BaseEntity;
 import com.billiegen.common.jpa.BillieRepository;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -39,9 +40,11 @@ public class BillieRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
     @Transactional
     public <S extends T> S save(S entity) {
         try {
-            Method onSave = this.clazz.getMethod("onSave");
-            Method onUpdate = this.clazz.getMethod("onUpdate");
-            preSaveBaseEntity(entity, onSave, onUpdate);
+            if ((entity instanceof BaseEntity)) {
+                Method onSave = this.clazz.getMethod("onSave");
+                Method onUpdate = this.clazz.getMethod("onUpdate");
+                preSaveBaseEntity(entity, onSave, onUpdate);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -50,12 +53,10 @@ public class BillieRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
     }
 
     private final void preSaveBaseEntity(T entity, Method onSave, Method onUpdate) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if ((entity instanceof BaseEntity)) {
-            if (this.entityInformation.isNew(entity)) {
-                onSave.invoke(entity);
-            } else {
-                onUpdate.invoke(entity);
-            }
+        if (this.entityInformation.isNew(entity)) {
+            onSave.invoke(entity);
+        } else {
+            onUpdate.invoke(entity);
         }
     }
 
