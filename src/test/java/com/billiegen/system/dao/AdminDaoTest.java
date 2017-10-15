@@ -10,15 +10,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
+
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author CodePorter
  * @date 2017-09-30
  */
+@Transactional
+@Rollback(value = false)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-@Rollback(value = true)
 public class AdminDaoTest {
 
     @Autowired
@@ -37,13 +40,13 @@ public class AdminDaoTest {
 
     @Test
     public void findOne() {
-        Admin admin = adminDao.findOne("2c9298a55f0fbfd9015f0fbfee1d0000");
+        Admin admin = adminDao.findOne("1d768f55b8014519bef7873581ec9ff5");
         assertTrue(admin != null);
     }
 
     @Test
     public void update() {
-        String id = "2c9298a55f0fbfd9015f0fbfee1d0000";
+        String id = "1d768f55b8014519bef7873581ec9ff5";
         Admin admin = adminDao.findOne(id);
         admin.setSex(Sex.FEMALE);
         adminDao.save(admin);
@@ -53,7 +56,7 @@ public class AdminDaoTest {
 
     @Test
     public void delete() {
-        String delId = "2c9298a55f0fbfd9015f0fbfee1d0000";
+        String delId = "1d768f55b8014519bef7873581ec9ff5";
         adminDao.delete(delId);
         assertTrue(adminDao.findOne(delId) == null);
     }

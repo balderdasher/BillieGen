@@ -2,9 +2,14 @@ package com.billiegen.system.entity;
 
 import com.billiegen.common.framework.entity.BaseEntity;
 import com.billiegen.system.enums.Sex;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.type.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 管理员
@@ -13,7 +18,9 @@ import java.util.Date;
  * @date 2017-09-30
  */
 @Entity
-@Table(name = "sys_admin")
+@Table(name = "sys_admin",
+        indexes = @Index(columnList = "username", name = "uk_username", unique = true)
+)
 public class Admin extends BaseEntity {
     private String username;
     private String password;
@@ -29,8 +36,51 @@ public class Admin extends BaseEntity {
     private Date lockedDate;
     private Date loginDate;
     private String loginIp;
+    private Set<Role> roleSet = new HashSet<>();
 
-    @Column(nullable = false, unique = true)
+    @Override
+    @Transient
+    public void onSave() {
+        super.onSave();
+        if (this.sex == null) {
+            this.sex = Sex.MALE;
+        }
+        if (this.isEnabled == null) {
+            this.isEnabled = true;
+        }
+        if (this.isLocked == null) {
+            this.isLocked = false;
+        }
+        if (this.isExpired == null) {
+            this.isExpired = false;
+        }
+        if (this.isCredentialsExpired == null) {
+            this.isCredentialsExpired = false;
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        this.onSave();
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name = "sys_admin_role",
+            joinColumns = @JoinColumn(name = "admin_id", foreignKey = @ForeignKey(name = "fk_admin_role_admin")),
+            inverseJoinColumns = @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_admin_role_role"))
+    )
+    @OrderBy("sortSeq asc")
+    public Set<Role> getRoleSet() {
+        return roleSet;
+    }
+
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
+    }
+
+    @Column(nullable = false, updatable = false)
     public String getUsername() {
         return username;
     }
@@ -39,6 +89,8 @@ public class Admin extends BaseEntity {
         this.username = username;
     }
 
+    @Column(nullable = false)
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -64,6 +116,7 @@ public class Admin extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     public Sex getSex() {
         return sex;
     }
@@ -72,6 +125,7 @@ public class Admin extends BaseEntity {
         this.sex = sex;
     }
 
+    @Column(nullable = false)
     public String getEmail() {
         return email;
     }
@@ -88,6 +142,7 @@ public class Admin extends BaseEntity {
         this.salt = salt;
     }
 
+    @Column(nullable = false)
     public Boolean getEnabled() {
         return isEnabled;
     }
@@ -96,6 +151,7 @@ public class Admin extends BaseEntity {
         isEnabled = enabled;
     }
 
+    @Column(nullable = false)
     public Boolean getLocked() {
         return isLocked;
     }
@@ -104,6 +160,7 @@ public class Admin extends BaseEntity {
         isLocked = locked;
     }
 
+    @Column(nullable = false)
     public Boolean getExpired() {
         return isExpired;
     }
@@ -112,6 +169,7 @@ public class Admin extends BaseEntity {
         isExpired = expired;
     }
 
+    @Column(nullable = false)
     public Boolean getCredentialsExpired() {
         return isCredentialsExpired;
     }

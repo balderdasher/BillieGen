@@ -2,8 +2,7 @@ package com.billiegen.system.entity;
 
 import com.billiegen.common.framework.entity.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -13,15 +12,21 @@ import java.util.Set;
  * @date 2017-09-30
  */
 @Entity
-@Table(name = "sys_role")
+@Table(name = "sys_right",
+        indexes = {
+                @Index(columnList = "rightCode", name = "uk_right_code", unique = true),
+                @Index(columnList = "menu_id", name = "idx_menu_id")
+        }
+)
 public class Right extends BaseEntity {
     private String rightName;
     private String rightCode;
     private String rightRemark;
-    private Set<Role> roles;
+    private Set<Role> roleSet;
     private Menu menuInfo;
     private String rightLink;
 
+    @Column(nullable = false)
     public String getRightName() {
         return rightName;
     }
@@ -30,6 +35,7 @@ public class Right extends BaseEntity {
         this.rightName = rightName;
     }
 
+    @Column(nullable = false, updatable = false)
     public String getRightCode() {
         return rightCode;
     }
@@ -46,14 +52,17 @@ public class Right extends BaseEntity {
         this.rightRemark = rightRemark;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    @ManyToMany(mappedBy = "rightSet")
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_menu_id"))
     public Menu getMenuInfo() {
         return menuInfo;
     }

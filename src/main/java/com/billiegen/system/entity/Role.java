@@ -13,21 +13,39 @@ import java.util.Set;
  * @date 2017-09-30
  */
 @Entity
-@Table(name = "sys_role")
+@Table(name = "sys_role",
+        indexes = @Index(columnList = "roleName", name = "uk_role_name", unique = true)
+)
 public class Role extends BaseEntity {
-    private String name;
+    private String roleName;
     private Boolean isSystem;
     private String description;
-    private Set<Right> allRights;
+    private Set<Right> rightSet;
     private Set<Admin> adminSet = new HashSet<>();
 
-    @Column(unique = true,nullable = false)
-    public String getName() {
-        return name;
+    @Override
+    @Transient
+    public void onSave() {
+        super.onSave();
+        if (this.isSystem == null) {
+            this.isSystem = false;
+        }
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    @Transient
+    public void onUpdate() {
+        super.onUpdate();
+        this.onSave();
+    }
+
+    @Column(nullable = false)
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     @Column(nullable = false)
@@ -49,15 +67,20 @@ public class Role extends BaseEntity {
     }
 
     @ManyToMany
-    public Set<Right> getAllRights() {
-        return allRights;
+    @JoinTable(
+            name = "sys_role_right",
+            joinColumns = @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_role_right_role")),
+            inverseJoinColumns = @JoinColumn(name = "right_id", foreignKey = @ForeignKey(name = "fk_role_right_right"))
+    )
+    public Set<Right> getRightSet() {
+        return rightSet;
     }
 
-    public void setAllRights(Set<Right> allRights) {
-        this.allRights = allRights;
+    public void setRightSet(Set<Right> rightSet) {
+        this.rightSet = rightSet;
     }
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "roleSet")
     public Set<Admin> getAdminSet() {
         return adminSet;
     }
