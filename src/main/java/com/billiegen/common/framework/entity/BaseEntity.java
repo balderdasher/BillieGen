@@ -26,6 +26,8 @@ public class BaseEntity implements Serializable {
     protected Date modifyDate;
     /* 排列顺序 */
     protected Integer sortSeq;
+    /* 删除标记 */
+    protected Boolean delFlag;
 
     @Id
     @GeneratedValue(generator = "billiegen-uuid-generator")
@@ -63,6 +65,14 @@ public class BaseEntity implements Serializable {
 
     public void setSortSeq(Integer sortSeq) {
         this.sortSeq = sortSeq;
+    }
+
+    public Boolean getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Boolean delFlag) {
+        this.delFlag = delFlag;
     }
 
     @Transient
