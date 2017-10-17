@@ -8,4 +8,7 @@ import com.billiegen.system.entity.Right;
  * @date 2017-10-15
  */
 public interface RightDao extends BaseDao<Right, String> {
+    Right findRightByRightNameEquals(String rightName);
+
+    Right findRightByRightCodeEquals(String rightCode);
 }

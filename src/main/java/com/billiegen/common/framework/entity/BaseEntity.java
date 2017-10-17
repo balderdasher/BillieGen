@@ -80,6 +80,9 @@ public class BaseEntity implements Serializable {
         if (this.sortSeq == null) {
             this.sortSeq = 0;
         }
+        if (this.delFlag == null) {
+            this.delFlag = false;
+        }
         Date time = new Date();
         if (this.createDate == null) {
             this.createDate = time;
@@ -93,6 +96,9 @@ public class BaseEntity implements Serializable {
     public void onUpdate() {
         if (this.sortSeq == null) {
             this.sortSeq = 0;
+        }
+        if (this.delFlag == null) {
+            this.delFlag = false;
         }
         this.modifyDate = new Date();
     }

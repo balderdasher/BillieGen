@@ -8,4 +8,5 @@ import com.billiegen.system.entity.Admin;
  * @date 2017-09-30
  */
 public interface AdminDao extends BaseDao<Admin, String> {
+    Admin findAdminByUsernameEquals(String username);
 }

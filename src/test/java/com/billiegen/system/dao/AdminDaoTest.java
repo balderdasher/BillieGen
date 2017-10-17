@@ -39,25 +39,24 @@ public class AdminDaoTest {
     }
 
     @Test
-    public void findOne() {
-        Admin admin = adminDao.findOne("1d768f55b8014519bef7873581ec9ff5");
+    public void find() {
+        Admin admin = adminDao.findAdminByUsernameEquals("admin");
         assertTrue(admin != null);
     }
 
     @Test
     public void update() {
-        String id = "1d768f55b8014519bef7873581ec9ff5";
-        Admin admin = adminDao.findOne(id);
+        Admin admin = adminDao.findAdminByUsernameEquals("admin");
         admin.setSex(Sex.FEMALE);
         adminDao.save(admin);
-        Admin updator = adminDao.findOne(id);
+        Admin updator = adminDao.findAdminByUsernameEquals("admin");
         assertTrue(updator.getSex() == Sex.FEMALE);
     }
 
     @Test
     public void delete() {
-        String delId = "1d768f55b8014519bef7873581ec9ff5";
-        adminDao.delete(delId);
-        assertTrue(adminDao.findOne(delId) == null);
+        Admin admin = adminDao.findAdminByUsernameEquals("admin");
+        adminDao.delete(admin);
+        System.out.println(admin.getId());
     }
 }

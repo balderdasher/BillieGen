@@ -5,7 +5,6 @@ import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Menu;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
-import com.billiegen.system.enums.Sex;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,16 +47,13 @@ public class SystemTest {
 
     @Before
     public void setUp(){
-        role = roleDao.findOne("c41b823d583a4b86abef08452cfd67fd");
+        admin = adminDao.findAdminByUsernameEquals("admin");
+        role = roleDao.findRoleByRoleNameEquals("超级管理员");
         roleSet.add(role);
     }
 
     @Test
     public void adminRoleSaveTest() {
-        admin.setUsername("admin");
-        admin.setPassword("123");
-        admin.setSex(Sex.MALE);
-        admin.setEmail("balderdasher@msn.com");
         admin.setRoleSet(roleSet);
         adminDao.save(admin);
         System.out.println(admin.getId());
@@ -65,16 +61,18 @@ public class SystemTest {
 
     @Test
     public void adminRoleUpdateTest(){
-        Admin admin = adminDao.findOne("017156a796e64167aba92661c147f42e");
-        roleSet.add(role);
-        admin.setRoleSet(roleSet);
+        admin.setRoleSet(null);
         adminDao.save(admin);
     }
 
     @Test
-    public void adminRoleDeleteTest(){
-        Admin admin = adminDao.findOne("017156a796e64167aba92661c147f42e");
+    public void delteAdminForWatchingRole() {
         adminDao.delete(admin);
+    }
+
+    @Test
+    public void deleteRoleForWatchingAdmin() {
+        roleDao.delete(role);
     }
 
     @Test

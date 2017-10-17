@@ -8,4 +8,5 @@ import com.billiegen.system.entity.Menu;
  * @date 2017-10-15
  */
 public interface MenuDao extends BaseDao<Menu, String> {
+    Menu findMenuByMenuNameEquals(String menuName);
 }

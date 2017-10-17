@@ -1,7 +1,6 @@
 package com.billiegen.system.dao;
 
 import com.billiegen.Application;
-import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
 import org.junit.Before;
@@ -16,7 +15,7 @@ import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author mrdios
@@ -44,6 +43,7 @@ public class RoleDaoTest {
     @Test
     public void save() {
         roleDao.save(role);
+        System.out.println(role.getId());
     }
 
     @Test
@@ -60,6 +60,12 @@ public class RoleDaoTest {
     public void findRoleByNameEquals() throws Exception {
         Role role = roleDao.findRoleByRoleNameEquals("超级管理员");
         assertTrue(role != null && role.getRoleName().equals("超级管理员"));
+    }
+
+    @Test
+    public void delete() {
+        Role role = roleDao.findRoleByRoleNameEquals("超级管理员");
+        roleDao.delete(role);
     }
 
 }
