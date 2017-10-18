@@ -3,10 +3,9 @@ package com.billiegen.system.entity;
 import com.billiegen.common.framework.entity.BaseEntity;
 import com.billiegen.system.enums.Sex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.type.Type;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +17,7 @@ import java.util.Set;
  * @date 2017-09-30
  */
 @Entity
+@Where(clause = "del_flag=0")
 @Table(name = "sys_admin",
         indexes = @Index(columnList = "username", name = "uk_username", unique = true)
 )
