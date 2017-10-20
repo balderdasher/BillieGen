@@ -24,6 +24,9 @@ import java.util.Properties;
 @Configuration
 public class ShiroConfig {
     private static final Logger logger = LogManager.getLogger();
+    public static final String HASH_ALGORITHM = "SHA-1";
+    public static final int HASH_INTERATIONS = 1024;
+    public static final int SALT_SIZE = 8;
 
     @Value("billie.common.config.admin.path")
     private String adminPath;
@@ -64,8 +67,8 @@ public class ShiroConfig {
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashAlgorithmName(HASH_ALGORITHM);
+        hashedCredentialsMatcher.setHashIterations(HASH_INTERATIONS);//散列的次数，比如散列两次，相当于 md5(md5(""));
         return hashedCredentialsMatcher;
     }
 

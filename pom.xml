@@ -54,6 +54,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
         <!-- apache shiro-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -65,6 +69,10 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
         </dependency>
         <!-- slf4j -->
         <!--<dependency>
@@ -122,14 +130,14 @@
             </plugin>
 
             <!-- war打包插件,设定war包名称 -->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
                     <warName>${project.artifactId}</warName>
                 </configuration>
-            </plugin>-->
+            </plugin>
             <!--spring boot 打包插件jar-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
