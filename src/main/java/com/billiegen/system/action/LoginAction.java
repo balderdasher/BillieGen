@@ -25,7 +25,7 @@ import java.util.Map;
  * @date 2017-10-20
  */
 @Controller
-@RequestMapping("${billie.common.config.admin.path}")
+@RequestMapping("/admin")
 public class LoginAction {
     private Logger logger = LogManager.getLogger();
 
@@ -44,25 +44,25 @@ public class LoginAction {
 
     @PostMapping("/login")
     public String login(Model model, HttpServletRequest request) {
-        String error = "";
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String captcha = request.getParameter("captcha");
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordCaptchaToken token = new UsernamePasswordCaptchaToken(username, password, captcha);
-        try {
-            subject.login(token);
-        } catch (UnknownAccountException | IncorrectCredentialsException e) {
-            error = "用户名/密码错误";
-        } catch (AuthenticationException e) {
-            //其他错误，比如锁定，如果想单独处理请单独catch处理
-            error = e.getMessage();
+        // 登录失败从request中获取shiro处理的异常信息
+        // shiro异常类全类名：shiroLoginFailure
+        String exception = (String) request.getAttribute("shiroLoginFailure");
+        String msg = "";
+        if (!StringUtils.isEmpty(exception)) {
+            if (UnknownAccountException.class.getName().equals(exception)) {
+                msg = "UnknownAccountException --> 账号不存在";
+            } else if (IncorrectCredentialsException.class.getName().equals(exception)) {
+                msg = "IncorrectCredentialsException --> 密码不对";
+            } else if ("kaptchaValidateFaild".equals(exception)) {
+                msg = "kaptchaValidateFaild --> 验证码不对";
+            } else {
+                msg = "验证异常 >> " + exception;
+            }
         }
-        if (StringUtils.isEmpty(error)) {
-            return home();
+        if (StringUtils.isNotEmpty(msg)) {
+            logger.error(msg);
+            model.addAttribute("msg", msg);
         }
-        logger.info(error);
-        model.addAttribute("msg", error);
         return "page_user_login_1";
     }
 
@@ -74,11 +74,6 @@ public class LoginAction {
      */
     @RequestMapping("/index")
     public String index(Model model) {
-        Subject subject = SecurityUtils.getSubject();
-        Principal principal = (Principal) subject.getPrincipal();
-        if (principal == null) {
-            return "page_user_login_1";
-        }
         return "index";
     }
 

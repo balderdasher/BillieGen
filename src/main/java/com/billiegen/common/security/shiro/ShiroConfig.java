@@ -30,27 +30,28 @@ public class ShiroConfig {
     public static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
 
-    @Value(value = "")
+    @Value(value = "${billie.common.config.admin.path}")
     private String adminPath;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        logger.info("ShiroConfiguration.shiroFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/assets/**", "anon");
         // 配置退出过滤器，其中的具体退出代码shiro已实现
         filterChainDefinitionMap.put(adminPath + "/logout", "logout");
         // 过滤链定义：从上向下顺序执行，一般将/**放在最下面
         // authc:所有url都必须认证通过才可以访问，anon：所有url都可以匿名访问
-        filterChainDefinitionMap.put(adminPath + "/**", "authc");
+        filterChainDefinitionMap.put("/**", "authc");
+
         // 如果不设置默认会自动寻找web工程目录下的login.jsp页面
-        shiroFilterFactoryBean.setLoginUrl(adminPath + "/login");
+        shiroFilterFactoryBean.setLoginUrl( "/admin/login");
         // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl(adminPath + "/index");
+        shiroFilterFactoryBean.setSuccessUrl("/admin/index");
         // 未授权的页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

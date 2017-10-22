@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -40,16 +37,18 @@ public class BillieShiroRealm extends AuthorizingRealm {
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) authenticationToken;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
+            throws AuthenticationException {
+        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         logger.info("{} is trying to authentication", token.getUsername());
 
         // 验证码校验
-        String captchaRight = (String) SecurityUtils.getSubject().getSession(true).getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
-        String captchaInput = token.getCaptcha();
-        if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
+//        String captchaRight = (String) SecurityUtils.getSubject().getSession(true)
+//                .getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
+//        String captchaInput = token.getCaptcha();
+//        if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
 //            throw new AuthenticationException("验证码错误.");
-        }
+//        }
         // 用户名密码校验
         Admin user = adminDao.findAdminByUsernameEquals(token.getUsername());
         if (user != null) {
