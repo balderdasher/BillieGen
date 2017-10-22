@@ -48,7 +48,7 @@ public class BillieShiroRealm extends AuthorizingRealm {
         String captchaRight = (String) SecurityUtils.getSubject().getSession(true).getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
         String captchaInput = token.getCaptcha();
         if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
-            throw new AuthenticationException("验证码错误.");
+//            throw new AuthenticationException("验证码错误.");
         }
         // 用户名密码校验
         Admin user = adminDao.findAdminByUsernameEquals(token.getUsername());
