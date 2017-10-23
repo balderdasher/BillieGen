@@ -1,0 +1,83 @@
+# server config
+server:
+  port: 8081
+  session:
+    persistent: true
+    timeout: 30
+  error:
+    whitelabel:
+      enabled: false
+
+# spring configs
+spring:
+  # color logging
+  output:
+    ansi:
+      enabled: always
+  # static resource path config
+  resources:
+    static-locations:
+      - classpath:/META-INF/resources/
+      - classpath:/resources/
+      - classpath:/static/
+      - classpath:/public/
+      - file:C:/xinhuanet/projects/billiegen/metronic/theme/
+  # freemarker config
+  freemarker:
+    enabled: true
+    content-type: text/html
+    cache: false
+    charset: UTF-8
+    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic/theme/admin_1/
+    suffix: .html
+    check-template-location: true
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    request-context-attribute: base
+    prefer-file-system-access: true
+    settings:
+      tag_syntax: auto_detect
+      boolean_format: true,false
+      date_time_format: yyyy-MM-dd HH:mm:ss
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      number_format: 0.######
+      whitespace_stripping: true
+  # spring-boot-data-jpa
+  jpa:
+    database: mysql
+    properties:
+      hibernate.hbm2ddl.auto: update
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      naming:
+        strategy: org.hibernate.cfg.DefaultComponentSafeNamingStrategy
+    show-sql: true
+  # datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/billiegen?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+
+# custom config
+billie:
+  back:
+    path: /admin
+  shiro:
+    loginUrl: ${billie.back.path}/login
+    successUrl: ${billie.back.path}/index
+    unauthorizedUrl: /403
+    filterChainDefinitionMap:
+      /static/**: anon
+      /assets/**: anon
+      /admin/logout: logout
+      /admin/**: authc
+
+
+
+
+
+
+
+

@@ -39,24 +39,27 @@ public class BillieShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
-        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+        UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) authenticationToken;
         logger.info("{} is trying to authentication", token.getUsername());
 
         // 验证码校验
-//        String captchaRight = (String) SecurityUtils.getSubject().getSession(true)
-//                .getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
-//        String captchaInput = token.getCaptcha();
-//        if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
-//            throw new AuthenticationException("验证码错误.");
-//        }
+        String captchaRight = (String) SecurityUtils.getSubject().getSession(true)
+                .getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
+        String captchaInput = token.getCaptcha();
+        if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
+            throw new AuthenticationException("验证码错误.");
+        }
         // 用户名密码校验
         Admin user = adminDao.findAdminByUsernameEquals(token.getUsername());
         if (user != null) {
             if (!user.getEnabled()) {
-                throw new AuthenticationException("账户未启用.");
+                throw new AccountException("账户未启用.");
             }
             if (user.getLocked()) {
-                throw new AuthenticationException("账号被锁定.");
+                throw new LockedAccountException("账号被锁定.");
+            }
+            if (user.getExpired()) {
+                throw new DisabledAccountException("账号已过期.");
             }
             byte[] salt = EncodeUtil.decodeHex(user.getPassword().substring(0, 16));
             return new SimpleAuthenticationInfo(

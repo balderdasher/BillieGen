@@ -13,8 +13,9 @@ public class UsernamePasswordCaptchaToken extends UsernamePasswordToken {
         super();
     }
 
-    public UsernamePasswordCaptchaToken(String username, String password, String captcha) {
-        super(username, password);
+    public UsernamePasswordCaptchaToken(String username, String password,
+                                        boolean rememberMe, String host, String captcha) {
+        super(username, password, rememberMe, host);
         this.captcha = captcha;
     }
 

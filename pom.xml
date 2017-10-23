@@ -39,6 +39,12 @@
     </developers>
 
     <dependencies>
+        <!-- spring-boot-config -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- spring data jpa -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +74,11 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
             <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.mingsoft</groupId>
+            <artifactId>shiro-freemarker-tags</artifactId>
+            <version>0.1</version>
         </dependency>
         <!-- tools begin -->
         <dependency>

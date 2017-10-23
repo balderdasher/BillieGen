@@ -1,7 +1,5 @@
 package com.billiegen.common.security.shiro;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -9,7 +7,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -25,37 +23,24 @@ import java.util.Properties;
  */
 @Configuration
 public class ShiroConfig {
-    private static final Logger logger = LogManager.getLogger();
     public static final String HASH_ALGORITHM = "SHA-1";
     public static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
 
-    @Value(value = "${billie.common.config.admin.path}")
-    private String adminPath;
-
     @Bean
+    @ConfigurationProperties("billie.shiro")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // 拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/assets/**", "anon");
-        // 配置退出过滤器，其中的具体退出代码shiro已实现
-        filterChainDefinitionMap.put(adminPath + "/logout", "logout");
-        // 过滤链定义：从上向下顺序执行，一般将/**放在最下面
-        // authc:所有url都必须认证通过才可以访问，anon：所有url都可以匿名访问
-        filterChainDefinitionMap.put("/**", "authc");
-
-        // 如果不设置默认会自动寻找web工程目录下的login.jsp页面
-        shiroFilterFactoryBean.setLoginUrl( "/admin/login");
-        // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/admin/index");
-        // 未授权的页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        Map<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put(FormAuthenticationFilter.FILTER_KEY, formAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
         return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public Filter formAuthenticationFilter() {
+        return new FormAuthenticationFilter();
     }
 
     /**
@@ -69,7 +54,7 @@ public class ShiroConfig {
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName(HASH_ALGORITHM);
-        hashedCredentialsMatcher.setHashIterations(HASH_INTERATIONS);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(HASH_INTERATIONS);
         return hashedCredentialsMatcher;
     }
 
@@ -107,7 +92,6 @@ public class ShiroConfig {
         daap.setProxyTargetClass(true);
         return daap;
     }
-
 
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
