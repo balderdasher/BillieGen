@@ -1,14 +1,11 @@
 package com.billiegen.common.security.shiro;
 
-import com.billiegen.system.action.CaptchaAction;
 import com.billiegen.system.dao.AdminDao;
 import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Role;
 import com.billiegen.utils.security.EncodeUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -42,14 +39,6 @@ public class BillieShiroRealm extends AuthorizingRealm {
         UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) authenticationToken;
         logger.info("{} is trying to authentication", token.getUsername());
 
-        // 验证码校验
-        String captchaRight = (String) SecurityUtils.getSubject().getSession(true)
-                .getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
-        String captchaInput = token.getCaptcha();
-        if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
-            throw new AuthenticationException("验证码错误.");
-        }
-        // 用户名密码校验
         Admin user = adminDao.findAdminByUsernameEquals(token.getUsername());
         if (user != null) {
             if (!user.getEnabled()) {

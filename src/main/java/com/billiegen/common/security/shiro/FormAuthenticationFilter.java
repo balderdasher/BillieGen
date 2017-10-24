@@ -1,5 +1,6 @@
 package com.billiegen.common.security.shiro;
 
+import com.billiegen.system.action.CaptchaAction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +12,8 @@ import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author CodePorter
@@ -21,6 +24,22 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
     public static final String FILTER_KEY = "authc";
     public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
     public static final String DEFAULT_MESSAGE_PARAM = "shiroLoginFailMessage";
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        if (isLoginRequest(request, response) && isLoginSubmission(request, response)) {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            HttpSession session = httpServletRequest.getSession();
+
+            String captchaRight = (String) session.getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
+            String captchaInput = WebUtils.getCleanParam(request, DEFAULT_CAPTCHA_PARAM);
+            if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
+                request.setAttribute(DEFAULT_MESSAGE_PARAM, "验证码错误.");
+                return true;
+            }
+        }
+        return super.onAccessDenied(request, response);
+    }
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
