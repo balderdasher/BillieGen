@@ -1,4 +1,4 @@
-package com.billiegen.common.security.shiro;
+package com.billiegen.common.security.shiro.bean;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 

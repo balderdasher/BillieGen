@@ -2,6 +2,8 @@ package com.billiegen.common.security.shiro;
 
 import com.billiegen.utils.security.EncodeUtil;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -26,7 +28,7 @@ import java.util.Properties;
  */
 @Configuration
 public class ShiroConfig {
-    public static final String HASH_ALGORITHM = "SHA-1";
+    private static final String HASH_ALGORITHM = "SHA-1";
     public static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
 
@@ -36,7 +38,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put(FormAuthenticationFilter.FILTER_KEY, formAuthenticationFilter());
+        filterMap.put(FormAuthenticationFilter.FILTER_KEY_AUTHC, formAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         return shiroFilterFactoryBean;
     }
@@ -82,10 +84,18 @@ public class ShiroConfig {
     }
 
     @Bean
+    public CacheManager shiroEhCacheManager() {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+        return ehCacheManager;
+    }
+
+    @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(billieShiroRealm());
         securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setCacheManager(shiroEhCacheManager());
         return securityManager;
     }
 

@@ -1,4 +1,4 @@
-package com.billiegen.common.security.shiro;
+package com.billiegen.common.security.shiro.bean;
 
 import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Role;

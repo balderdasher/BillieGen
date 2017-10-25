@@ -56,9 +56,14 @@
             <version>5.1.38</version>
         </dependency>
         <!-- druid -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
+            <version>1.1.2</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.2</version>
         </dependency>
         <!-- web开发支持 -->
@@ -85,6 +90,11 @@
             <groupId>net.mingsoft</groupId>
             <artifactId>shiro-freemarker-tags</artifactId>
             <version>0.1</version>
+        </dependency>
+        <!-- ehcache -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
         <!-- tools begin -->
         <dependency>

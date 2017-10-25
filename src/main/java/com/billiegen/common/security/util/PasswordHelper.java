@@ -1,4 +1,4 @@
-package com.billiegen.common.security.shiro;
+package com.billiegen.common.security.util;
 
 import com.billiegen.utils.security.DigestsUtil;
 import com.billiegen.utils.security.EncodeUtil;

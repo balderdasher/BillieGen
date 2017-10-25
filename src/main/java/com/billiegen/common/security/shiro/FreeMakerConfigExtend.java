@@ -13,8 +13,12 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class FreeMakerConfigExtend {
+    private final Configuration configuration;
+
     @Autowired
-    private Configuration configuration;
+    public FreeMakerConfigExtend(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @PostConstruct
     public void setShareVariable() {

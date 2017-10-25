@@ -1,5 +1,7 @@
 package com.billiegen.common.security.shiro;
 
+import com.billiegen.common.security.shiro.bean.Principal;
+import com.billiegen.common.security.shiro.bean.UsernamePasswordCaptchaToken;
 import com.billiegen.system.dao.AdminDao;
 import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Role;

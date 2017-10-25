@@ -1,6 +1,6 @@
 package com.billiegen.system.action;
 
-import com.billiegen.common.security.shiro.Principal;
+import com.billiegen.common.security.shiro.bean.Principal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -11,11 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author CodePorter
@@ -64,14 +61,15 @@ public class LoginAction {
      * 退出
      */
     @RequestMapping(value = "/logout")
-    @ResponseBody
-    public Map<String, Object> logout() {
-        Map<String, Object> resuleMap = new LinkedHashMap<String, Object>();
+    public String logout() {
         try {
-            SecurityUtils.getSubject().logout();
+            Subject subject = SecurityUtils.getSubject();
+            if (subject != null) {
+                subject.logout();
+            }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
-        return resuleMap;
+        return "redirect:" + adminPath + "/login";
     }
 }

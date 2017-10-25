@@ -1,5 +1,6 @@
 package com.billiegen.common.security.shiro;
 
+import com.billiegen.common.security.util.PasswordHelper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

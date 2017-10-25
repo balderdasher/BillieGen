@@ -1,5 +1,6 @@
 package com.billiegen.common.security.shiro;
 
+import com.billiegen.common.security.shiro.bean.UsernamePasswordCaptchaToken;
 import com.billiegen.system.action.CaptchaAction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.FormAuthenticationFilter {
     private static final Logger logger = LogManager.getLogger();
-    public static final String FILTER_KEY = "authc";
+    public static final String FILTER_KEY_AUTHC = "authc";
     public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
     public static final String DEFAULT_MESSAGE_PARAM = "shiroLoginFailMessage";
 
