@@ -32,6 +32,9 @@ spring:
         enabled: true
         charset: UTF-8
         force: true
+  # i18n config
+  messages:
+    basename: languages/back/messages
   # freemarker config
   freemarker:
     enabled: true
