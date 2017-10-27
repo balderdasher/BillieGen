@@ -1,7 +1,6 @@
 package com.billiegen.common.security.shiro;
 
 import com.billiegen.common.security.shiro.bean.UsernamePasswordCaptchaToken;
-import com.billiegen.system.action.CaptchaAction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +14,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static com.billiegen.common.servlet.CaptchaServlet.SESSION_ATTR_CAPTCHA;
 
 /**
  * @author CodePorter
@@ -32,7 +33,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             HttpSession session = httpServletRequest.getSession();
 
-            String captchaRight = (String) session.getAttribute(CaptchaAction.SESSION_ATTR_CAPTCHA);
+            String captchaRight = (String) session.getAttribute(SESSION_ATTR_CAPTCHA);
             String captchaInput = WebUtils.getCleanParam(request, DEFAULT_CAPTCHA_PARAM);
             if (StringUtils.isEmpty(captchaInput) || !StringUtils.equalsIgnoreCase(captchaInput, captchaRight)) {
                 request.setAttribute(DEFAULT_MESSAGE_PARAM, "验证码错误.");

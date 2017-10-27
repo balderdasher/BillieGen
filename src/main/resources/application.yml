@@ -41,7 +41,7 @@ spring:
     content-type: text/html
     cache: false
     charset: UTF-8
-    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic/theme/admin_1/
+    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic
     suffix: .html
     check-template-location: true
     expose-request-attributes: true
@@ -57,6 +57,7 @@ spring:
       time_format: HH:mm:ss
       number_format: 0.######
       whitespace_stripping: true
+      auto_import: ftl/spring.ftl as s
   # spring-boot-data-jpa
   jpa:
     database: mysql
@@ -116,6 +117,9 @@ spring:
 billie:
   back:
     path: /admin
+    theme: admin_1
+  front:
+    path: /front
   shiro:
     loginUrl: ${billie.back.path}/login
     successUrl: ${billie.back.path}/index

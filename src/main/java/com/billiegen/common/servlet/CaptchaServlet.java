@@ -1,12 +1,13 @@
-package com.billiegen.system.action;
+package com.billiegen.common.servlet;
 
 import com.billiegen.common.captcha.advance.Captcha;
 import com.billiegen.common.captcha.advance.GifCaptcha;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,15 +16,15 @@ import java.io.OutputStream;
 
 /**
  * @author CodePorter
- * @date 2017-10-20
+ * @date 2017-10-27
  */
-@Controller
-public class CaptchaAction {
+@WebServlet(name = "captchaServlet", urlPatterns = "/captcha.img")
+public class CaptchaServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     public static final String SESSION_ATTR_CAPTCHA = "captcha";
 
-    @GetMapping(value = "/captcha")
-    public void getCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -42,3 +43,4 @@ public class CaptchaAction {
         }
     }
 }
+

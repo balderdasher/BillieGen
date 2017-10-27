@@ -1,4 +1,4 @@
-package com.billiegen.system.action;
+package com.example.back;
 
 import com.billiegen.common.security.shiro.bean.Principal;
 import org.apache.logging.log4j.LogManager;

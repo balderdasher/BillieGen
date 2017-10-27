@@ -12,9 +12,12 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import javax.servlet.Filter;
@@ -27,10 +30,12 @@ import java.util.Properties;
  * @date 2017-10-19
  */
 @Configuration
-public class ShiroConfig {
+public class ShiroConfig implements EnvironmentAware {
     private static final String HASH_ALGORITHM = "SHA-1";
     public static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
+
+    private RelaxedPropertyResolver propertyResolver;
 
     @Bean
     @ConfigurationProperties("billie.shiro")
@@ -44,7 +49,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public Filter formAuthenticationFilter() {
+    public FormAuthenticationFilter formAuthenticationFilter() {
         return new FormAuthenticationFilter();
     }
 
@@ -136,5 +141,10 @@ public class ShiroConfig {
         r.setDefaultErrorView("error");    // No default
         r.setExceptionAttribute("ex");     // Default is "exception"
         return r;
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.propertyResolver = new RelaxedPropertyResolver(environment);
     }
 }
