@@ -3,16 +3,18 @@ package com.billiegen.common.config;
 import com.billiegen.common.fmk.RichFreeMarkerView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -27,6 +29,7 @@ import java.util.Locale;
  * @date 2017-10-27
  */
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = "com.example.front",
         includeFilters = @ComponentScan.Filter(value = Controller.class)
 )
@@ -37,19 +40,28 @@ public class FrontConfig extends BaseConfig {
         logger.info("ServletFront is initializing.");
     }
 
-    /**
-     * 前台视图处理器
-     *
-     * @param viewResolver
-     * @return
-     */
-    @Bean(name = "backViewResolver")
-    public CommandLineRunner frontViewResolver(FreeMarkerViewResolver viewResolver) {
-        return args -> {
-            viewResolver.setViewClass(RichFreeMarkerView.class);
-            viewResolver.setPrefix("/front_1/");
-            viewResolver.setSuffix(".html");
-        };
+//    /**
+//     * 前台视图处理器
+//     *
+//     * @param viewResolver
+//     * @return
+//     */
+//    @Bean(name = "frontViewResolver")
+//    public CommandLineRunner frontViewResolver(FreeMarkerViewResolver viewResolver) {
+//        return args -> {
+//            viewResolver.setViewClass(RichFreeMarkerView.class);
+//            viewResolver.setPrefix("/front_1/");
+//            viewResolver.setSuffix(".html");
+//        };
+//    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
+        viewResolver.setViewClass(RichFreeMarkerView.class);
+        viewResolver.setPrefix("/front_1/");
+        viewResolver.setSuffix(".html");
+        registry.viewResolver(viewResolver);
     }
 
     /**
@@ -92,13 +104,24 @@ public class FrontConfig extends BaseConfig {
      * @return
      */
     @Bean(name = "servletFront")
-    public ServletRegistrationBean servletBack(ApplicationContext applicationContext) {
+    public ServletRegistrationBean servletBack() {
+        //注解扫描上下文
+        AnnotationConfigWebApplicationContext applicationContext
+                = new AnnotationConfigWebApplicationContext();
+        //base package
+        applicationContext.scan("com.example.front");
         DispatcherServlet servletBack = new DispatcherServlet();
         servletBack.setApplicationContext(applicationContext);
         String frontRootPath = propertyResolver.getProperty("billie.front.path");
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servletBack, frontRootPath);
-        servletRegistrationBean.setLoadOnStartup(1);
+        servletRegistrationBean.setLoadOnStartup(2);
         servletRegistrationBean.setName("billieServletFront");
         return servletRegistrationBean;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("file:G:/mrdios/projects/billiegen/resource/metronic/");
+        super.addResourceHandlers(registry);
     }
 }

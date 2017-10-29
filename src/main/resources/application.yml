@@ -1,6 +1,6 @@
 # server config
 server:
-  port: 8081
+  port: 8080
   session:
     persistent: true
     timeout: 30
@@ -21,11 +21,13 @@ spring:
       - classpath:/resources/
       - classpath:/static/
       - classpath:/public/
-      - file:C:/xinhuanet/projects/billiegen/metronic/theme/
+#      - file:C:/xinhuanet/projects/billiegen/metronic/theme/
+      - file:G:/mrdios/projects/billiegen/resource/metronic/
   # custom favicon
   mvc:
     favicon:
       enabled: false
+    static-path-pattern: /**
   # charset
   http:
       encoding:
@@ -41,7 +43,8 @@ spring:
     content-type: text/html
     cache: false
     charset: UTF-8
-    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic
+#    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic
+    template-loader-path: file:G:/mrdios/projects/billiegen/resource/metronic
     suffix: .html
     check-template-location: true
     expose-request-attributes: true
