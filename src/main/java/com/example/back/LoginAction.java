@@ -38,7 +38,7 @@ public class LoginAction {
 
     @PostMapping("/login")
     public String login(Model model, HttpServletRequest request) {
-        return "page_user_login_1";
+        return "/admin_1/page_user_login_1";
     }
 
     /**
@@ -49,7 +49,7 @@ public class LoginAction {
      */
     @RequestMapping("/index")
     public String index(Model model) {
-        return "index";
+        return "/admin_1/index";
     }
 
     @RequestMapping("")

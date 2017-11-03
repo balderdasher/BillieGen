@@ -16,7 +16,7 @@ public class FrontAction {
     @RequestMapping("/front")
     public String welcomeFront(Model model) {
         model.addAttribute("msg", "Welcome to front");
-        return "index";
+        return "index_front";
     }
 
     @RequestMapping("/front.json")

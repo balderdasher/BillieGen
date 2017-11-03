@@ -1,7 +1,8 @@
-package com.billiegen;
+package com;
 
+import com.billiegen.common.config.BackConfig;
+import com.billiegen.common.config.FrontConfig;
 import org.springframework.boot.Banner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -24,9 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
                 @ComponentScan.Filter(value = RestController.class)
         }
 )
-public class Application extends SpringBootServletInitializer {
+public class Applications extends SpringBootServletInitializer {
 
-    public Application() {
+    public Applications() {
         super();
         setRegisterErrorPageFilter(false);
     }
@@ -37,13 +38,17 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(Applications.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(Application.class);
-        application.setBannerMode(Banner.Mode.LOG);
-        application.run(args);
+        new SpringApplicationBuilder()
+                .bannerMode(Banner.Mode.LOG)
+                .sources(Applications.class)
+                .child(BackConfig.class)
+                .child(FrontConfig.class)
+                .web(true)
+                .run(args);
     }
 }

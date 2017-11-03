@@ -1,6 +1,6 @@
 package com.billiegen.system.dao;
 
-import com.billiegen.Application;
+import com.Application;
 import com.billiegen.system.entity.Admin;
 import com.billiegen.system.entity.Menu;
 import com.billiegen.system.entity.Right;

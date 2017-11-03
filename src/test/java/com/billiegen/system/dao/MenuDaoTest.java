@@ -1,6 +1,6 @@
 package com.billiegen.system.dao;
 
-import com.billiegen.Application;
+import com.Application;
 import com.billiegen.system.entity.Menu;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,11 +11,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author mrdios

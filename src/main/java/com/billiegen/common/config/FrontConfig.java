@@ -3,17 +3,14 @@ package com.billiegen.common.config;
 import com.billiegen.common.fmk.RichFreeMarkerView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -40,28 +37,23 @@ public class FrontConfig extends BaseConfig {
         logger.info("ServletFront is initializing.");
     }
 
-//    /**
-//     * 前台视图处理器
-//     *
-//     * @param viewResolver
-//     * @return
-//     */
-//    @Bean(name = "frontViewResolver")
-//    public CommandLineRunner frontViewResolver(FreeMarkerViewResolver viewResolver) {
-//        return args -> {
-//            viewResolver.setViewClass(RichFreeMarkerView.class);
-//            viewResolver.setPrefix("/front_1/");
-//            viewResolver.setSuffix(".html");
-//        };
-//    }
-
+    /**
+     * 前台视图处理器
+     *
+     * @return
+     */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(frontViewResolver());
+    }
+
+    @Bean
+    public FreeMarkerViewResolver frontViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
         viewResolver.setViewClass(RichFreeMarkerView.class);
         viewResolver.setPrefix("/front_1/");
         viewResolver.setSuffix(".html");
-        registry.viewResolver(viewResolver);
+        return viewResolver;
     }
 
     /**
@@ -69,7 +61,7 @@ public class FrontConfig extends BaseConfig {
      *
      * @return
      */
-    @Bean(name = "frontMessageSource")
+    @Bean
     public ReloadableResourceBundleMessageSource frontMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setCacheSeconds(-1);
@@ -77,7 +69,7 @@ public class FrontConfig extends BaseConfig {
         return messageSource;
     }
 
-    @Bean(name = "frontLocaleResolver")
+    @Bean
     public CookieLocaleResolver frontLocaleResolver() {
         CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
         cookieLocaleResolver.setDefaultLocale(Locale.CHINESE);
@@ -86,7 +78,7 @@ public class FrontConfig extends BaseConfig {
         return cookieLocaleResolver;
     }
 
-    @Bean(name = "frontLocaleChangeInterceptor")
+    @Bean
     public LocaleChangeInterceptor frontLocaleChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
@@ -98,30 +90,24 @@ public class FrontConfig extends BaseConfig {
         registry.addInterceptor(frontLocaleChangeInterceptor());
     }
 
-    /**
-     * 前台servlet
-     *
-     * @return
-     */
-    @Bean(name = "servletFront")
-    public ServletRegistrationBean servletBack() {
-        //注解扫描上下文
-        AnnotationConfigWebApplicationContext applicationContext
-                = new AnnotationConfigWebApplicationContext();
-        //base package
-        applicationContext.scan("com.example.front");
-        DispatcherServlet servletBack = new DispatcherServlet();
-        servletBack.setApplicationContext(applicationContext);
-        String frontRootPath = propertyResolver.getProperty("billie.front.path");
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servletBack, frontRootPath);
-        servletRegistrationBean.setLoadOnStartup(2);
-        servletRegistrationBean.setName("billieServletFront");
-        return servletRegistrationBean;
-    }
+//    /**
+//     * 前台servlet
+//     *
+//     * @return
+//     */
+//    @Bean(name = "servletFront")
+//    public ServletRegistrationBean servletFront() {
+//        AnnotationConfigEmbeddedWebApplicationContext context = new AnnotationConfigEmbeddedWebApplicationContext();
+//        DispatcherServlet servletBack = new DispatcherServlet(context);
+//        String frontRootPath = propertyResolver.getProperty("billie.front.path");
+//        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servletBack, frontRootPath);
+//        servletRegistrationBean.setLoadOnStartup(2);
+//        servletRegistrationBean.setName("billieServletFront");
+//        return servletRegistrationBean;
+//    }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("file:G:/mrdios/projects/billiegen/resource/metronic/");
-        super.addResourceHandlers(registry);
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 }

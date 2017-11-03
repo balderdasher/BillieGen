@@ -1,6 +1,6 @@
 package com.billiegen.system.dao;
 
-import com.billiegen.Application;
+import com.Application;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
 import org.junit.Before;

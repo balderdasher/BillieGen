@@ -1,6 +1,6 @@
 package com.billiegen.system.dao;
 
-import com.billiegen.Application;
+import com.Application;
 import com.billiegen.system.entity.Menu;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
@@ -13,11 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * @author mrdios
