@@ -1,6 +1,6 @@
 # server config
 server:
-  port: 8080
+  port: 8081
   session:
     persistent: true
     timeout: 30

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2017-10-27
  */
 @Controller
+@RequestMapping("${billie.back.path}")
 public class BackAction {
 
     @RequestMapping("/welcome")

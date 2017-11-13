@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2017-10-27
  */
 @Controller
+@RequestMapping("${billie.front.path}")
 public class FrontAction {
 
     @RequestMapping("/welcome")
     public String welcomeFront(Model model) {
         model.addAttribute("msg", "Welcome to front");
-        return "front_1/index_front";
+        return "index_front";
     }
 
     @RequestMapping("/welcome.json")

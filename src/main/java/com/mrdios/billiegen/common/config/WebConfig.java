@@ -3,19 +3,14 @@ package com.mrdios.billiegen.common.config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 相当于web.xml配置
- *
  * @author CodePorter
  * @date 2017-10-24
  */
@@ -40,28 +35,28 @@ public class WebConfig extends BaseConfig {
         return registrationBean;
     }
 
-    @Bean
-    public ServletRegistrationBean backServlet() {
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-        applicationContext.register(BackConfig.class);
-        DispatcherServlet backServlet = new DispatcherServlet(applicationContext);
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(backServlet);
-        registrationBean.setLoadOnStartup(1);
-        registrationBean.addUrlMappings("/back/*");
-        registrationBean.setName("backServlet");
-        return registrationBean;
-    }
-
-    @Bean
-    public ServletRegistrationBean frontServlet() {
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-        applicationContext.register(FrontConfig.class);
-        DispatcherServlet frontServlet = new DispatcherServlet(applicationContext);
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(frontServlet);
-        registrationBean.setLoadOnStartup(2);
-        registrationBean.addUrlMappings("/front/*");
-        registrationBean.setName("frontServlet");
-        return registrationBean;
-    }
+//    @Bean
+//    public ServletRegistrationBean backServlet() {
+//        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+//        applicationContext.register(BackConfig.class);
+//        DispatcherServlet backServlet = new DispatcherServlet(applicationContext);
+//        ServletRegistrationBean registrationBean = new ServletRegistrationBean(backServlet);
+//        registrationBean.setLoadOnStartup(1);
+//        registrationBean.addUrlMappings("/back/*");
+//        registrationBean.setName("backServlet");
+//        return registrationBean;
+//    }
+//
+//    @Bean
+//    public ServletRegistrationBean frontServlet() {
+//        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+//        applicationContext.register(FrontConfig.class);
+//        DispatcherServlet frontServlet = new DispatcherServlet(applicationContext);
+//        ServletRegistrationBean registrationBean = new ServletRegistrationBean(frontServlet);
+//        registrationBean.setLoadOnStartup(2);
+//        registrationBean.addUrlMappings("/front/*");
+//        registrationBean.setName("frontServlet");
+//        return registrationBean;
+//    }
 
 }

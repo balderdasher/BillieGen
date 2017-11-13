@@ -4,12 +4,9 @@ import com.mrdios.billiegen.common.fmk.RichFreeMarkerView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -26,9 +23,9 @@ import java.util.Locale;
  * @date 2017-10-27
  */
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = "com.mrdios.example.back",
-        includeFilters = @ComponentScan.Filter(value = Controller.class))
+//@EnableWebMvc
+//@ComponentScan(basePackages = "com.mrdios.example.back",
+//        includeFilters = @ComponentScan.Filter(value = Controller.class))
 public class BackConfig extends BaseConfig {
     private static final Logger logger = LogManager.getLogger();
 
