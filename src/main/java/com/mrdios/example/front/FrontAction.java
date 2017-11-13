@@ -16,12 +16,12 @@ public class FrontAction {
     @RequestMapping("/welcome")
     public String welcomeFront(Model model) {
         model.addAttribute("msg", "Welcome to front");
-        return "index_front";
+        return "index_back";
     }
 
     @RequestMapping("/welcome.json")
     @ResponseBody
     public String welcome() {
-        return "Welcome to front";
+        return "Welcome to front哈哈哈";
     }
 }

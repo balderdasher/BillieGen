@@ -33,15 +33,6 @@ public class BackConfig extends BaseConfig {
         logger.info("ServletBack context is initializing.");
     }
 
-    /**
-     * 后台视图处理器
-     *
-     */
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(backViewResolver());
-    }
-
     @Bean
     public FreeMarkerViewResolver backViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
@@ -49,6 +40,14 @@ public class BackConfig extends BaseConfig {
         viewResolver.setPrefix("/" + propertyResolver.getProperty("billie.back.theme") + "/");
         viewResolver.setSuffix(".html");
         return viewResolver;
+    }
+
+    /**
+     * 后台视图处理器
+     */
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(backViewResolver());
     }
 
     /**

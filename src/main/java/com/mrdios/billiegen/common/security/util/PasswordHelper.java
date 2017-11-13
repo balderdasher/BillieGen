@@ -3,8 +3,8 @@ package com.mrdios.billiegen.common.security.util;
 import com.mrdios.billiegen.utils.security.DigestsUtil;
 import com.mrdios.billiegen.utils.security.EncodeUtil;
 
-import static com.mrdios.billiegen.common.security.shiro.ShiroConfig.HASH_INTERATIONS;
-import static com.mrdios.billiegen.common.security.shiro.ShiroConfig.SALT_SIZE;
+import static com.mrdios.billiegen.common.config.ShiroConfig.HASH_INTERATIONS;
+import static com.mrdios.billiegen.common.config.ShiroConfig.SALT_SIZE;
 
 /**
  * @author CodePorter

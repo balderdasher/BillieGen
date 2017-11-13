@@ -5,14 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author CodePorter
  * @date 2017-09-29
  */
-@RestController
 //@SpringBootApplication(exclude = DispatcherServletAutoConfiguration.class)
 @SpringBootApplication
 @ServletComponentScan
@@ -28,11 +25,6 @@ public class Application extends SpringBootServletInitializer {
     public Application() {
         super();
         setRegisterErrorPageFilter(false);
-    }
-
-    @RequestMapping("hi")
-    public String hello() {
-        return "Hello World!";
     }
 
     @Override

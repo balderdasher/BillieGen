@@ -51,7 +51,7 @@ public class BillieRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
         return super.save(entity);
     }
 
-    private final void preSaveBaseEntity(T entity, Method onSave, Method onUpdate) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private void preSaveBaseEntity(T entity, Method onSave, Method onUpdate) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (this.entityInformation.isNew(entity)) {
             onSave.invoke(entity);
         } else {
