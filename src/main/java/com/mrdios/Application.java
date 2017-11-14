@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author CodePorter
@@ -13,13 +16,13 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 //@SpringBootApplication(exclude = DispatcherServletAutoConfiguration.class)
 @SpringBootApplication
 @ServletComponentScan
-//@ComponentScan(basePackages = "com.mrdios",
-//        excludeFilters = {
-//                @ComponentScan.Filter(value = Controller.class),
-//                @ComponentScan.Filter(value = RestController.class),
-//                @ComponentScan.Filter(value = EnableWebMvc.class)
-//        }
-//)
+@ComponentScan(basePackages = "com.mrdios",
+        excludeFilters = {
+                @ComponentScan.Filter(value = Controller.class),
+                @ComponentScan.Filter(value = RestController.class)/*,
+                @ComponentScan.Filter(value = EnableWebMvc.class)*/
+        }
+)
 public class Application extends SpringBootServletInitializer {
 
     public Application() {

@@ -51,7 +51,7 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     expose-spring-macro-helpers: true
-    request-context-attribute: base
+    request-context-attribute: request
     prefer-file-system-access: true
     settings:
       tag_syntax: auto_detect

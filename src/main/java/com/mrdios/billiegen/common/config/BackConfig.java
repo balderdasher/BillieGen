@@ -4,9 +4,12 @@ import com.mrdios.billiegen.common.fmk.RichFreeMarkerView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -23,9 +26,9 @@ import java.util.Locale;
  * @date 2017-10-27
  */
 @Configuration
-//@EnableWebMvc
-//@ComponentScan(basePackages = "com.mrdios.example.back",
-//        includeFilters = @ComponentScan.Filter(value = Controller.class))
+@EnableWebMvc
+@ComponentScan(basePackages = "com.mrdios.example.back",
+        includeFilters = @ComponentScan.Filter(value = Controller.class))
 public class BackConfig extends BaseConfig {
     private static final Logger logger = LogManager.getLogger();
 
@@ -34,7 +37,7 @@ public class BackConfig extends BaseConfig {
     }
 
     @Bean
-    public FreeMarkerViewResolver backViewResolver() {
+    public FreeMarkerViewResolver freeMarkerViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
         viewResolver.setViewClass(RichFreeMarkerView.class);
         viewResolver.setPrefix("/" + propertyResolver.getProperty("billie.back.theme") + "/");
@@ -47,33 +50,34 @@ public class BackConfig extends BaseConfig {
      */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(backViewResolver());
+        registry.viewResolver(freeMarkerViewResolver());
     }
 
-    /**
-     * 后台国际化信息
-     *
-     * @return
-     */
-    @Bean
-    public ReloadableResourceBundleMessageSource backMessageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setCacheSeconds(-1);
-        messageSource.setBasename("languages/back/messages");
-        return messageSource;
-    }
+//    /**
+//     * 后台国际化信息
+//     *
+//     * @return
+//     */
+//    @Bean
+//    @Primary
+//    public MessageSource messageSource() {
+//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//        messageSource.setCacheSeconds(-1);
+//        messageSource.setBasenames("languages/back/messages");
+//        return messageSource;
+//    }
 
     @Bean
-    public CookieLocaleResolver backLocaleResolver() {
+    public LocaleResolver localeResolver() {
         CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-        cookieLocaleResolver.setDefaultLocale(Locale.CHINESE);
+        cookieLocaleResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         cookieLocaleResolver.setCookieMaxAge(-1);
         cookieLocaleResolver.setCookieName("BACK_LANGUAGE");
         return cookieLocaleResolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor backLocaleChangeInterceptor() {
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
         return interceptor;
@@ -81,7 +85,7 @@ public class BackConfig extends BaseConfig {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(backLocaleChangeInterceptor());
+        registry.addInterceptor(localeChangeInterceptor());
     }
 
     @Override

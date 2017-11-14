@@ -34,7 +34,7 @@ public class CaptchaServlet extends HttpServlet {
         try {
             OutputStream out = response.getOutputStream();
             captcha.out(out);
-            HttpSession session = request.getSession(true);
+            HttpSession session = request.getSession();
             session.setAttribute(SESSION_ATTR_CAPTCHA, captcha.text().toLowerCase());
             out.flush();
             out.close();
