@@ -6,8 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -37,9 +39,11 @@ public class BackConfig extends BaseConfig {
     }
 
     @Bean
-    public FreeMarkerViewResolver freeMarkerViewResolver() {
+    @Primary
+    public ViewResolver mvcViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
         viewResolver.setViewClass(RichFreeMarkerView.class);
+        viewResolver.setContentType("text/html;charset=UTF-8");
         viewResolver.setPrefix("/" + propertyResolver.getProperty("billie.back.theme") + "/");
         viewResolver.setSuffix(".html");
         return viewResolver;
@@ -50,7 +54,7 @@ public class BackConfig extends BaseConfig {
      */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(freeMarkerViewResolver());
+        registry.viewResolver(mvcViewResolver());
     }
 
 //    /**

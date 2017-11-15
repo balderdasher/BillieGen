@@ -16,7 +16,7 @@ public class BackAction {
     @RequestMapping("/welcome")
     public String welcomeFront(Model model) {
         model.addAttribute("msg", "Welcome to back");
-        return "index_back";
+        return "index";
     }
 
     @RequestMapping("/welcome.json")

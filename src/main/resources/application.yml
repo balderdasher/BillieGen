@@ -36,7 +36,7 @@ spring:
         force: true
 #  # i18n config
   messages:
-    basename: languages/back/messages
+    basename: languages/back/messages,languages/front/messages
     encoding: UTF-8
   # freemarker config
   freemarker:
