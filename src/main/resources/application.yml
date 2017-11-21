@@ -124,6 +124,9 @@ billie:
     theme: admin_1
   front:
     path: /front
+    theme: front_1
+  api:
+    path: /api
   shiro:
     loginUrl: ${billie.back.path}/login
     successUrl: ${billie.back.path}/index
@@ -137,6 +140,8 @@ billie:
       /**: anon
     filter-config:
       redirectUrl: ${billie.shiro.loginUrl}
+  gen:
+    base-package: com.mrdios
 
 
 
