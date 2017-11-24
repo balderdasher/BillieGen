@@ -1,7 +1,6 @@
 package com.billiegen.system.dao;
 
 import com.Application;
-import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +11,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -49,10 +46,7 @@ public class RoleDaoTest {
     @Test
     public void update() {
         Role role = roleDao.findRoleByRoleNameEquals("超级管理员");
-        Right right = rightDao.findOne("f1fdb7c3245f4a919320b67de02a7992");
-        Set<Right> rights = new HashSet<>();
-        rights.add(right);
-        role.setRightSet(rights);
+        role.setSystem(true);
         roleDao.save(role);
     }
 

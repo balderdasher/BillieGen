@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "sys_right",
         indexes = {
                 @Index(columnList = "rightCode", name = "uk_right_code", unique = true),
-                @Index(columnList = "menu_id", name = "idx_menu_id")
+                @Index(columnList = "menu_code", name = "idx_menu_code")
         }
 )
 public class Right extends BaseEntity {
@@ -62,7 +62,7 @@ public class Right extends BaseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_menu_id"))
+    @JoinColumn(name = "menu_code", foreignKey = @ForeignKey(name = "fk_menu_code"), referencedColumnName = "menuCode")
     public Menu getMenuInfo() {
         return menuInfo;
     }
@@ -77,5 +77,39 @@ public class Right extends BaseEntity {
 
     public void setRightLink(String rightLink) {
         this.rightLink = rightLink;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Right right = (Right) o;
+
+        if (!getRightName().equals(right.getRightName())) return false;
+        if (!getRightCode().equals(right.getRightCode())) return false;
+        if (!getRightRemark().equals(right.getRightRemark())) return false;
+        if (!getMenuInfo().equals(right.getMenuInfo())) return false;
+        return getRightLink().equals(right.getRightLink());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        int prime = 31;
+        result = prime * result + getRightName().hashCode();
+        result = prime * result + getRightCode().hashCode();
+        result = prime * result + getRightRemark().hashCode();
+        result = prime * result + getMenuInfo().hashCode();
+        result = prime * result + getRightLink().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Right{" +
+                "rightName='" + rightName + '\'' +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.billiegen.common.fmk;
+package com.billiegen.common.freemarker;
 
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;

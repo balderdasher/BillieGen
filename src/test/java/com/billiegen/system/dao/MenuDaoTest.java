@@ -34,7 +34,7 @@ public class MenuDaoTest {
     @Test
     public void save() {
         Menu parent = new Menu();
-        parent.setMenuName("后台管理");
+        parent.setMenuName("系统设置");
         parent.setMenuLevel("1");
         parent.setMenuLink("/sys");
         parent.setMenuCode("0010");

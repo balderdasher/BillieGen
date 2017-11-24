@@ -106,4 +106,38 @@ public class Menu extends BaseEntity {
     public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Menu menu = (Menu) o;
+
+        if (!getMenuName().equals(menu.getMenuName())) return false;
+        if (!getMenuLink().equals(menu.getMenuLink())) return false;
+        if (!getMenuRemark().equals(menu.getMenuRemark())) return false;
+        if (!getMenuCode().equals(menu.getMenuCode())) return false;
+        return getMenuLevel().equals(menu.getMenuLevel());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        int prime = 31;
+        result = prime * result + getMenuName().hashCode();
+        result = prime * result + getMenuLink().hashCode();
+        result = prime * result + getMenuRemark().hashCode();
+        result = prime * result + getMenuCode().hashCode();
+        result = prime * result + getMenuLevel().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "menuName='" + menuName + '\'' +
+                '}';
+    }
 }

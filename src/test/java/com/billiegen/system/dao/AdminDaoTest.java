@@ -1,6 +1,7 @@
 package com.billiegen.system.dao;
 
 import com.Application;
+import com.billiegen.common.security.util.PasswordHelper;
 import com.billiegen.system.entity.Admin;
 import com.billiegen.system.enums.Sex;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class AdminDaoTest {
     public void save() {
         Admin admin = new Admin();
         admin.setUsername("admin");
-        admin.setPassword("123");
+        admin.setPassword(PasswordHelper.entryptPassword("123456"));
         admin.setSex(Sex.MALE);
         admin.setEmail("balderdasher@msn.com");
         adminDao.save(admin);

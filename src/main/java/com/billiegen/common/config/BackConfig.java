@@ -1,6 +1,6 @@
 package com.billiegen.common.config;
 
-import com.billiegen.common.fmk.RichFreeMarkerView;
+import com.billiegen.common.freemarker.RichFreeMarkerView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;

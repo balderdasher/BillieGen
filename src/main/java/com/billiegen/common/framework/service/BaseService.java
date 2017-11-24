@@ -1,6 +1,6 @@
 package com.billiegen.common.framework.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.billiegen.common.jpa.BillieRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
@@ -10,6 +10,6 @@ import java.io.Serializable;
  * @date 2017-09-29
  */
 @NoRepositoryBean
-public interface BaseService<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface BaseService<T, ID extends Serializable> extends BillieRepository<T, ID> {
 
 }

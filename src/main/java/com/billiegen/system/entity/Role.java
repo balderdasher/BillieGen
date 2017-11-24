@@ -88,4 +88,34 @@ public class Role extends BaseEntity {
     public void setAdminSet(Set<Admin> adminSet) {
         this.adminSet = adminSet;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Role role = (Role) o;
+
+        if (!getRoleName().equals(role.getRoleName())) return false;
+        if (!isSystem.equals(role.isSystem)) return false;
+        return getDescription().equals(role.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        int prime = 31;
+        result = prime * result + getRoleName().hashCode();
+        result = prime * result + isSystem.hashCode();
+        result = prime * result + getDescription().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleName='" + roleName + '\'' +
+                '}';
+    }
 }
