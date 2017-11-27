@@ -35,31 +35,31 @@ public class MenuDaoTest {
     public void save() {
         Menu parent = new Menu();
         parent.setMenuName("系统设置");
-        parent.setMenuLevel("1");
+        parent.setMenuLevel(1);
         parent.setMenuLink("/sys");
         parent.setMenuCode("0010");
 
         Menu adminMenu = new Menu();
         adminMenu.setMenuName("管理员管理");
-        adminMenu.setMenuLevel("2");
+        adminMenu.setMenuLevel(2);
         adminMenu.setMenuLink("/sys/admin");
         adminMenu.setMenuCode("0011");
         adminMenu.setParentMenu(parent);
         Menu roleMenu = new Menu();
         roleMenu.setMenuName("角色管理");
-        roleMenu.setMenuLevel("2");
+        roleMenu.setMenuLevel(2);
         roleMenu.setMenuLink("/sys/role");
         roleMenu.setMenuCode("0012");
         roleMenu.setParentMenu(parent);
         Menu rightMenu = new Menu();
         rightMenu.setMenuName("权限管理");
-        rightMenu.setMenuLevel("2");
+        rightMenu.setMenuLevel(2);
         rightMenu.setMenuLink("/sys/right");
         rightMenu.setMenuCode("0013");
         rightMenu.setParentMenu(parent);
         Menu menuMenu = new Menu();
         menuMenu.setMenuName("菜单管理");
-        menuMenu.setMenuLevel("2");
+        menuMenu.setMenuLevel(2);
         menuMenu.setMenuLink("/sys/menu");
         menuMenu.setMenuCode("0014");
         menuMenu.setParentMenu(parent);

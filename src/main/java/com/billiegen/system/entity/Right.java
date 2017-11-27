@@ -98,11 +98,11 @@ public class Right extends BaseEntity {
     public int hashCode() {
         int result = super.hashCode();
         int prime = 31;
-        result = prime * result + getRightName().hashCode();
-        result = prime * result + getRightCode().hashCode();
-        result = prime * result + getRightRemark().hashCode();
-        result = prime * result + getMenuInfo().hashCode();
-        result = prime * result + getRightLink().hashCode();
+        result = prime * result + (getRightName() == null ? 0 : getRightName().hashCode());
+        result = prime * result + (getRightCode() == null ? 0 : getRightCode().hashCode());
+        result = prime * result + (getRightRemark() == null ? 0 : getRightRemark().hashCode());
+        result = prime * result + (getMenuInfo() == null ? 0 : getMenuInfo().hashCode());
+        result = prime * result + (getRightLink() == null ? 0 : getRightLink().hashCode());
         return result;
     }
 

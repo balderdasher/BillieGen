@@ -46,10 +46,12 @@ public class SystemTest {
     private Set<Right> rightSet = new HashSet<>();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         admin = adminDao.findAdminByUsernameEquals("admin");
         role = roleDao.findRoleByRoleNameEquals("超级管理员");
         roleSet.add(role);
+        right = rightDao.findRightByRightCodeEquals("sys:admin");
+        rightSet.addAll(rightDao.findAll());
     }
 
     @Test
@@ -60,7 +62,19 @@ public class SystemTest {
     }
 
     @Test
-    public void adminRoleUpdateTest(){
+    public void setRoleRight() {
+        role.setRightSet(rightSet);
+        roleDao.save(role);
+    }
+
+    @Test
+    public void setRightMenu() {
+        right.setMenuInfo(menuDao.findMenuByMenuNameEquals("系统设置"));
+        rightDao.save(right);
+    }
+
+    @Test
+    public void adminRoleUpdateTest() {
         admin.setRoleSet(null);
         adminDao.save(admin);
     }
@@ -75,8 +89,4 @@ public class SystemTest {
         roleDao.delete(role);
     }
 
-    @Test
-    public void roleRightSaveTest(){
-
-    }
 }

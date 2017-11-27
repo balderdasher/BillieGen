@@ -26,7 +26,7 @@ public class Menu extends BaseEntity {
     private String menuLink;
     private String menuRemark;
     private String menuCode;
-    private String menuLevel;
+    private Integer menuLevel;
     private Menu parentMenu;
     private List<Menu> subMenu = new ArrayList<>();
     private List<Right> allRights = new ArrayList<>();
@@ -68,11 +68,11 @@ public class Menu extends BaseEntity {
     }
 
     @Column(nullable = false)
-    public String getMenuLevel() {
+    public Integer getMenuLevel() {
         return menuLevel;
     }
 
-    public void setMenuLevel(String menuLevel) {
+    public void setMenuLevel(Integer menuLevel) {
         this.menuLevel = menuLevel;
     }
 
@@ -126,11 +126,11 @@ public class Menu extends BaseEntity {
     public int hashCode() {
         int result = super.hashCode();
         int prime = 31;
-        result = prime * result + getMenuName().hashCode();
-        result = prime * result + getMenuLink().hashCode();
-        result = prime * result + getMenuRemark().hashCode();
-        result = prime * result + getMenuCode().hashCode();
-        result = prime * result + getMenuLevel().hashCode();
+        result = prime * result + (getMenuName() == null ? 0 : getMenuName().hashCode());
+        result = prime * result + (getMenuLink() == null ? 0 : getMenuLink().hashCode());
+        result = prime * result + (getMenuRemark() == null ? 0 : getMenuRemark().hashCode());
+        result = prime * result + (getMenuCode() == null ? 0 : getMenuCode().hashCode());
+        result = prime * result + (getMenuLevel() == null ? 0 : getMenuLevel().hashCode());
         return result;
     }
 
