@@ -14,7 +14,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "sys_role",
-        indexes = @Index(columnList = "roleName", name = "uk_role_name", unique = true)
+        indexes = {
+                @Index(columnList = "roleName", name = "uk_role_name", unique = true)
+        }
 )
 public class Role extends BaseEntity {
     private String roleName;
@@ -39,7 +41,7 @@ public class Role extends BaseEntity {
         this.onSave();
     }
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     public String getRoleName() {
         return roleName;
     }
@@ -57,7 +59,6 @@ public class Role extends BaseEntity {
         isSystem = system;
     }
 
-    @Lob
     public String getDescription() {
         return description;
     }

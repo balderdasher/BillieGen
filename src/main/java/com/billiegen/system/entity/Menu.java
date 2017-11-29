@@ -27,6 +27,8 @@ public class Menu extends BaseEntity {
     private String menuRemark;
     private String menuCode;
     private Integer menuLevel;
+    private String menuIcon;
+    private String menuTarget;
     private Menu parentMenu;
     private List<Menu> subMenu = new ArrayList<>();
     private List<Right> allRights = new ArrayList<>();
@@ -49,7 +51,6 @@ public class Menu extends BaseEntity {
         this.menuLink = menuLink;
     }
 
-    @Column(length = 1024)
     public String getMenuRemark() {
         return menuRemark;
     }
@@ -74,6 +75,24 @@ public class Menu extends BaseEntity {
 
     public void setMenuLevel(Integer menuLevel) {
         this.menuLevel = menuLevel;
+    }
+
+    @Column(length = 32)
+    public String getMenuIcon() {
+        return menuIcon;
+    }
+
+    public void setMenuIcon(String menuIcon) {
+        this.menuIcon = menuIcon;
+    }
+
+    @Column(length = 32)
+    public String getMenuTarget() {
+        return menuTarget;
+    }
+
+    public void setMenuTarget(String menuTarget) {
+        this.menuTarget = menuTarget;
     }
 
     @ManyToOne

@@ -26,15 +26,12 @@ public class StudentServiceTest {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private StudentBetaService studentBetaService;
-
     private Student student;
 
     @Before
     public void setUp() {
         student = new Student();
-        student.setName("tom");
+        student.setName("jerry");
         student.setAge(22);
         student.setSex(Sex.MALE);
     }
@@ -44,8 +41,4 @@ public class StudentServiceTest {
         studentService.save(student);
     }
 
-    @Test
-    public void betaSave() {
-        studentBetaService.save(student);
-    }
 }

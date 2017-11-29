@@ -71,13 +71,13 @@ spring:
     hibernate:
       naming:
         strategy: org.hibernate.cfg.DefaultComponentSafeNamingStrategy
-    show-sql: true
+    show-sql: false
     open-in-view: true
   # datasource
   datasource:
     druid:
     # JDBC配置
-      url: jdbc:mysql://localhost:3306/billiegen?useSSL=false&useUnicode=true&characterEncoding=utf-8
+      url: jdbc:mysql://localhost:3306/billiegen?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&characterEncoding=utf-8
       username: root
       password: root
       driver-class-name: com.mysql.jdbc.Driver

@@ -32,7 +32,8 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "billiegen-uuid-generator")
     @GenericGenerator(name = "billiegen-uuid-generator", strategy = "com.billiegen.common.hibernate.BillieUUIDGenerator")
-//    @GenericGenerator(name = "billiegen-uuid-generator", strategy = "uuid2")
+    // @GenericGenerator(name = "billiegen-uuid-generator", strategy = "uuid2")
+    @Column(length = 32)
     public String getId() {
         return id;
     }

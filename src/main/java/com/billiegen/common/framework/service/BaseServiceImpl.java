@@ -2,6 +2,7 @@ package com.billiegen.common.framework.service;
 
 import com.billiegen.common.framework.dao.BaseDao;
 import com.billiegen.common.framework.entity.BaseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,64 +17,70 @@ import java.util.List;
  * @date 2017-11-22
  */
 @Transactional
-public class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> implements BaseService<T, ID> {
-    private BaseDao<T, ID> baseDao;
-
-    public BaseDao<T, ID> getBaseDao() {
-        return baseDao;
-    }
-
-    public void setBaseDao(BaseDao<T, ID> baseDao) {
-        this.baseDao = baseDao;
-    }
+public class BaseServiceImpl<D extends BaseDao<T, ID>, T extends BaseEntity, ID extends Serializable> implements BaseService<T, ID> {
+    @Autowired
+    private D dao;
 
     @Override
     public List<T> findAll() {
-        return this.baseDao.findAll();
+        return this.dao.findAll();
     }
 
     @Override
     public List<T> findAll(Sort sort) {
-        return this.baseDao.findAll(sort);
+        return this.dao.findAll(sort);
     }
 
     @Override
     public Page<T> findAll(Pageable pageable) {
-        return this.baseDao.findAll(pageable);
+        return this.dao.findAll(pageable);
     }
 
     @Override
     public List<T> findAll(Iterable<ID> iterable) {
-        return this.baseDao.findAll(iterable);
+        return this.dao.findAll(iterable);
     }
 
     @Override
     public long count() {
-        return this.baseDao.count();
+        return this.dao.count();
     }
 
     @Override
     public void delete(ID id) {
-        T entity = findOne(id);
-        if (entity == null) {
-            throw new RuntimeException("the data is not exist with id:" + id);
-        }
-        BaseEntity e = (BaseEntity) entity;
-        e.setDelFlag(true);
-        this.save((T) e);
+        dao.delete(id);
     }
 
     @Override
     public void delete(T t) {
-        if (t == null) {
-            return;
-        }
-        BaseEntity e = (BaseEntity) t;
-        delete((ID) e.getId());
+        dao.delete(t);
     }
 
     @Override
     public void delete(Iterable<? extends T> iterable) {
+        dao.delete(iterable);
+    }
+
+    @Override
+    public void deleteSafely(ID id) {
+        T entity = findOne(id);
+        if (entity == null) {
+            throw new RuntimeException("the data is not exist with id:" + id);
+        }
+        entity.setDelFlag(true);
+        this.save(entity);
+    }
+
+    @Override
+    public void deleteSafely(T t) {
+        if (t == null) {
+            return;
+        }
+        delete((ID) t.getId());
+    }
+
+    @Override
+    public void deleteSafely(Iterable<? extends T> iterable) {
         if (null == iterable) {
             return;
         }
@@ -84,81 +91,81 @@ public class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> impl
 
     @Override
     public void deleteAll() {
-        this.baseDao.deleteAll();
+        this.dao.deleteAll();
     }
 
     @Override
     public <S extends T> S save(S s) {
-        return this.baseDao.save(s);
+        return this.dao.save(s);
     }
 
     @Override
     public <S extends T> List<S> save(Iterable<S> iterable) {
-        return this.baseDao.save(iterable);
+        return this.dao.save(iterable);
     }
 
     @Override
     public T findOne(ID id) {
-        return this.baseDao.findOne(id);
+        return this.dao.findOne(id);
     }
 
     @Override
     public boolean exists(ID id) {
-        return this.baseDao.exists(id);
+        return this.dao.exists(id);
     }
 
     @Override
     public void flush() {
-        this.baseDao.flush();
+        this.dao.flush();
     }
 
     @Override
     public <S extends T> S saveAndFlush(S s) {
-        return this.baseDao.saveAndFlush(s);
+        return this.dao.saveAndFlush(s);
     }
 
     @Override
     public void deleteInBatch(Iterable<T> iterable) {
-        this.baseDao.deleteInBatch(iterable);
+        this.dao.deleteInBatch(iterable);
     }
 
     @Override
     public void deleteAllInBatch() {
-        this.baseDao.deleteAllInBatch();
+        this.dao.deleteAllInBatch();
     }
 
     @Override
     public T getOne(ID id) {
-        return this.baseDao.getOne(id);
+        return this.dao.getOne(id);
     }
 
     @Override
     public <S extends T> S findOne(Example<S> example) {
-        return baseDao.findOne(example);
+        return dao.findOne(example);
     }
 
     @Override
     public <S extends T> List<S> findAll(Example<S> example) {
-        return baseDao.findAll(example);
+        return dao.findAll(example);
     }
 
     @Override
     public <S extends T> List<S> findAll(Example<S> example, Sort sort) {
-        return baseDao.findAll(example, sort);
+        return dao.findAll(example, sort);
     }
 
     @Override
     public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return findAll(example, pageable);
+        return dao.findAll(example, pageable);
     }
 
     @Override
     public <S extends T> long count(Example<S> example) {
-        return baseDao.count(example);
+        return dao.count(example);
     }
 
     @Override
     public <S extends T> boolean exists(Example<S> example) {
-        return baseDao.exists(example);
+        return dao.exists(example);
     }
 }

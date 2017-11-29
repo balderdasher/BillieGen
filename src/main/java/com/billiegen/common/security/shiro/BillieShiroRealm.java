@@ -85,6 +85,6 @@ public class BillieShiroRealm extends AuthorizingRealm {
 
     private void addRbacAuthorization(SimpleAuthorizationInfo authorization, Role role) {
         authorization.addRole(role.getId());
-        role.getRightSet().forEach(right -> authorization.addStringPermission(right.getRightCode()));
+        role.getRightSet().forEach(right -> authorization.addStringPermission(right.getPermission()));
     }
 }

@@ -19,16 +19,26 @@ import java.util.Set;
 @Entity
 @Where(clause = "del_flag=0")
 @Table(name = "sys_admin",
-        indexes = @Index(columnList = "username", name = "uk_username", unique = true)
+        indexes = {
+                @Index(columnList = "username", name = "uk_username", unique = true)
+        }
 )
 public class Admin extends BaseEntity {
     private String username;
     private String password;
+    // personal info
+    private Sex sex;
     private String nickname;
     private String realname;
-    private Sex sex;
+    private String mobileNumber;
+    private String interests;
+    private String occupation;
+    private String about;
+    private String websiteUrl;
     private String email;
-    private String salt;
+    // avatar
+    private String avatar;
+    private Boolean isSuper;
     private Boolean isEnabled;
     private Boolean isLocked;
     private Boolean isExpired;
@@ -45,6 +55,9 @@ public class Admin extends BaseEntity {
         if (this.sex == null) {
             this.sex = Sex.MALE;
         }
+        if (this.isSuper == null) {
+            this.isSuper = false;
+        }
         if (this.isEnabled == null) {
             this.isEnabled = true;
         }
@@ -60,6 +73,7 @@ public class Admin extends BaseEntity {
     }
 
     @Override
+    @Transient
     public void onUpdate() {
         super.onUpdate();
         this.onSave();
@@ -80,7 +94,7 @@ public class Admin extends BaseEntity {
         this.roleSet = roleSet;
     }
 
-    @Column(nullable = false, updatable = false)
+    @Column(length = 16, nullable = false, updatable = false)
     public String getUsername() {
         return username;
     }
@@ -107,12 +121,66 @@ public class Admin extends BaseEntity {
         this.nickname = nickname;
     }
 
+    @Column(length = 32)
     public String getRealname() {
         return realname;
     }
 
     public void setRealname(String realname) {
         this.realname = realname;
+    }
+
+    @Column(length = 11)
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    @Column(length = 64)
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    @Column(length = 64)
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    @Column(length = 1024)
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
+
+    @Lob
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Enumerated(EnumType.STRING)
@@ -134,14 +202,6 @@ public class Admin extends BaseEntity {
         this.email = email;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
     @Column(nullable = false)
     public Boolean getEnabled() {
         return isEnabled;
@@ -149,6 +209,15 @@ public class Admin extends BaseEntity {
 
     public void setEnabled(Boolean enabled) {
         isEnabled = enabled;
+    }
+
+    @Column(updatable = false, nullable = false)
+    public Boolean getSuper() {
+        return isSuper;
+    }
+
+    public void setSuper(Boolean aSuper) {
+        isSuper = aSuper;
     }
 
     @Column(nullable = false)

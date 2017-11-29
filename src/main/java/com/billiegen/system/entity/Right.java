@@ -21,12 +21,13 @@ import java.util.Set;
 public class Right extends BaseEntity {
     private String rightName;
     private String rightCode;
+    private String permission;
     private String rightRemark;
     private Set<Role> roleSet;
     private Menu menuInfo;
     private String rightLink;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     public String getRightName() {
         return rightName;
     }
@@ -35,9 +36,18 @@ public class Right extends BaseEntity {
         this.rightName = rightName;
     }
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 4)
     public String getRightCode() {
         return rightCode;
+    }
+
+    @Column(length = 64)
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
     public void setRightCode(String rightCode) {
@@ -100,6 +110,7 @@ public class Right extends BaseEntity {
         int prime = 31;
         result = prime * result + (getRightName() == null ? 0 : getRightName().hashCode());
         result = prime * result + (getRightCode() == null ? 0 : getRightCode().hashCode());
+        result = prime * result + (getPermission() == null ? 0 : getPermission().hashCode());
         result = prime * result + (getRightRemark() == null ? 0 : getRightRemark().hashCode());
         result = prime * result + (getMenuInfo() == null ? 0 : getMenuInfo().hashCode());
         result = prime * result + (getRightLink() == null ? 0 : getRightLink().hashCode());

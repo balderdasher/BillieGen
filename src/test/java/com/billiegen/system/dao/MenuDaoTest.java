@@ -84,4 +84,10 @@ public class MenuDaoTest {
         menuDao.delete("f2c328b26db248998d0a51862abdc8d9");
     }
 
+    @Test
+    public void getNextMenuCode() {
+        String menuCode = menuDao.getNextMenuCode(2);
+        System.out.println(menuCode);
+    }
+
 }

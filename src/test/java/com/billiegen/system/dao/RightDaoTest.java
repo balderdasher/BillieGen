@@ -4,6 +4,8 @@ import com.Application;
 import com.billiegen.system.entity.Right;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -20,6 +22,7 @@ import javax.transaction.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class RightDaoTest {
+    private static final Logger logger = LoggerFactory.getLogger(RightDaoTest.class);
 
     @Autowired
     private RightDao rightDao;
@@ -35,8 +38,14 @@ public class RightDaoTest {
 
     @Test
     public void delete() {
-        Right right = rightDao.findRightByRightNameEquals("管理员管理");
+        Right right = rightDao.findByRightName("管理员管理");
         rightDao.delete(right);
+    }
+
+    @Test
+    public void getNextRightCode() {
+        String nextCode = rightDao.getNextRightCode();
+        logger.info("The next rightCode is {}", nextCode);
     }
 
 }
