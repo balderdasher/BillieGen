@@ -4,7 +4,7 @@ import com.billiegen.common.security.shiro.bean.Principal;
 import com.billiegen.common.security.shiro.bean.UsernamePasswordCaptchaToken;
 import com.billiegen.system.dao.AdminDao;
 import com.billiegen.system.entity.Admin;
-import com.billiegen.system.entity.Role;
+import com.billiegen.system.service.SecurityService;
 import com.billiegen.utils.security.EncodeUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,8 +16,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-
 /**
  * @author CodePorter
  * @date 2017-10-19
@@ -25,6 +23,8 @@ import java.util.Date;
 public class BillieShiroRealm extends AuthorizingRealm {
     private static final Logger logger = LogManager.getLogger();
 
+    @Autowired
+    private SecurityService securityService;
     @Autowired
     private AdminDao adminDao;
 
@@ -40,7 +40,6 @@ public class BillieShiroRealm extends AuthorizingRealm {
             throws AuthenticationException {
         UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) authenticationToken;
         logger.info("{} is trying to authentication", token.getUsername());
-
         Admin user = adminDao.findAdminByUsernameEquals(token.getUsername());
         if (user != null) {
             if (!user.getEnabled()) {
@@ -70,21 +69,14 @@ public class BillieShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         Principal principal = (Principal) getAvailablePrincipal(principalCollection);
-        Admin user = adminDao.findAdminByUsernameEquals(principal.getUsername());
-        if (user != null) {
-            SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-            user.getRoleSet().forEach(role -> addRbacAuthorization(authorizationInfo, role));
-            // update last login date
-            user.setLoginDate(new Date());
-            adminDao.save(user);
-            // TODO: 2017/10/20 0020 record login log
-            return authorizationInfo;
-        }
-        return null;
+        principal = securityService.getAuthorizationPrincipal(principal);
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        addRbacAuthorization(authorizationInfo, principal);
+        return authorizationInfo;
     }
 
-    private void addRbacAuthorization(SimpleAuthorizationInfo authorization, Role role) {
-        authorization.addRole(role.getId());
-        role.getRightSet().forEach(right -> authorization.addStringPermission(right.getPermission()));
+    private void addRbacAuthorization(SimpleAuthorizationInfo authorization, Principal principal) {
+        authorization.addRoles(principal.getRoles());
+        authorization.addStringPermissions(principal.getRights());
     }
 }

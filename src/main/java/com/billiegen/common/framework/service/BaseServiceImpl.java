@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional
 public class BaseServiceImpl<D extends BaseDao<T, ID>, T extends BaseEntity, ID extends Serializable> implements BaseService<T, ID> {
     @Autowired
-    private D dao;
+    protected D dao;
 
     @Override
     public List<T> findAll() {

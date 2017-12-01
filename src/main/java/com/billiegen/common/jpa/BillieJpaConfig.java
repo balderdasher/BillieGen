@@ -1,5 +1,6 @@
 package com.billiegen.common.jpa;
 
+import com.billiegen.common.jpa.impl.BillieRepositoryImpl;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -11,7 +12,9 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.**.dao",
-        repositoryFactoryBeanClass = BillieRepositoryFactoryBean.class)
+        repositoryBaseClass = BillieRepositoryImpl.class)
+//@EnableJpaRepositories(basePackages = "com.**.dao",
+//        repositoryFactoryBeanClass = BillieRepositoryFactoryBean.class)
 @EnableSpringDataWebSupport
 @EntityScan(value = "com.**.entity")
 public class BillieJpaConfig {

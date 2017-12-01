@@ -1,12 +1,11 @@
 package com.billiegen.common.security.shiro.bean;
 
 import com.billiegen.system.entity.Admin;
-import com.billiegen.system.entity.Role;
+import com.billiegen.system.entity.Menu;
 
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 授权用户信息
@@ -19,21 +18,15 @@ public class Principal implements Serializable {
     private String username;
     private String email;
     private String name;
-    private List<String> roleList;
+    private Set<String> roles = new HashSet<>();
+    private Set<String> rights = new HashSet<>();
+    private Set<Menu> menus = new HashSet<>();
 
     public Principal(Admin user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.name = user.getRealname();
-        this.roleList = getRoleIdList(user);
-    }
-
-    private List<String> getRoleIdList(Admin user) {
-        return user.getRoleSet().stream()
-                .sorted(Comparator.comparingInt(Role::getSortSeq).reversed())
-                .map(Role::getId)
-                .collect(Collectors.toList());
     }
 
     public String getId() {
@@ -68,11 +61,27 @@ public class Principal implements Serializable {
         this.name = name;
     }
 
-    public List<String> getRoleList() {
-        return roleList;
+    public Set<String> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(List<String> roleList) {
-        this.roleList = roleList;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public Set<String> getRights() {
+        return rights;
+    }
+
+    public void setRights(Set<String> rights) {
+        this.rights = rights;
+    }
+
+    public Set<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<Menu> menus) {
+        this.menus = menus;
     }
 }

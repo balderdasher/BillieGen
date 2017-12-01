@@ -12,11 +12,11 @@ import javax.annotation.PostConstruct;
  * @date 2017-10-23
  */
 @Component
-public class FreeMakerConfigExtend {
+public class ShiroFreeMakerExtend {
     private final Configuration configuration;
 
     @Autowired
-    public FreeMakerConfigExtend(Configuration configuration) {
+    public ShiroFreeMakerExtend(Configuration configuration) {
         this.configuration = configuration;
     }
 

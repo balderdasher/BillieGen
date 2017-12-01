@@ -119,8 +119,6 @@ public class Right extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Right{" +
-                "rightName='" + rightName + '\'' +
-                '}';
+        return rightName;
     }
 }

@@ -33,12 +33,13 @@ public class WebConfig extends BaseConfig {
      * @return OpenEntityManagerInViewFilter
      */
     @Bean
-    public FilterRegistrationBean openSessionInViewFilter() {
+    public FilterRegistrationBean openEntityManagerInViewFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean(new OpenEntityManagerInViewFilter());
-        registrationBean.addUrlPatterns("/");
+        registrationBean.addUrlPatterns("/*");
         Map<String, String> initParams = new HashMap<>();
         initParams.put("excludeSuffixs", "js,css,jpg,jpeg,gif,png,bmp,html");
         initParams.put("singleSession", "true");
+        initParams.put("entityManagerFactoryBeanName", "entityManagerFactory");
         registrationBean.setInitParameters(initParams);
         return registrationBean;
     }

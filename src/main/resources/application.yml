@@ -132,6 +132,7 @@ billie:
     successUrl: ${billie.back.path}/index
     unauthorizedUrl: /403
     filterChainDefinitionMap:
+      /favicon.ico: anon
       /static/**: anon
       /assets/**: anon
       /admin/login: anon

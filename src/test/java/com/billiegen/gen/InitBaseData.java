@@ -11,6 +11,7 @@ import com.billiegen.system.entity.Menu;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
 import com.billiegen.system.enums.Sex;
+import com.billiegen.system.service.AdminService;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author CodePorter
  * @date 2017-11-28
  */
-@Transactional
-@Rollback(value = false)
+//@Transactional
+//@Rollback(value = false)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class InitBaseData {
@@ -43,6 +42,8 @@ public class InitBaseData {
 
     @Autowired
     private AdminDao adminDao;
+    @Autowired
+    private AdminService adminService;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -67,6 +68,30 @@ public class InitBaseData {
         initSuperAdmin();
         timer.stop();
         logger.info("System base data init OK, It takes {} seconds...", timer.getTime(TimeUnit.SECONDS) + "");
+    }
+
+    @Test
+    public void verifyBaseData() {
+//        Admin admin = adminDao.findAdminByUsernameEquals("admin");
+//        Admin admin = adminDao.getOne("1d0dac6ddb24454590e1dfda42a8a2f0");
+        Admin admin = adminService.findByUsername("admin");
+        logger.info("超级管理员 [{}] is exist...", admin.getUsername());
+        Set<Role> roles = admin.getRoleSet();
+        Set<Right> rights = new HashSet<>();
+        Set<Menu> menusThree = new HashSet<>();
+        roles.forEach(role1 -> rights.addAll(role1.getRightSet()));
+        rights.forEach(right -> menusThree.add(right.getMenuInfo()));
+        Set<Menu> menus = new HashSet<>(menusThree);
+        menusThree.forEach(menu -> {
+            Menu temp = menu;
+            while (temp.getParentMenu() != null && !menus.contains(temp.getParentMenu())) {
+                menus.add(temp.getParentMenu());
+                temp = temp.getParentMenu();
+            }
+        });
+        logger.info("超级管理员拥有角色 {}", roles);
+        logger.info("超级管理员拥有权限 {}", rights);
+        logger.info("超级管理员拥有菜单 {}", menus);
     }
 
     // 菜单

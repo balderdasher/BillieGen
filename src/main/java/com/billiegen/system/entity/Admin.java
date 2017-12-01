@@ -79,7 +79,7 @@ public class Admin extends BaseEntity {
         this.onSave();
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "sys_admin_role",
             joinColumns = @JoinColumn(name = "admin_id", foreignKey = @ForeignKey(name = "fk_admin_role_admin")),

@@ -25,7 +25,6 @@ public class BillieRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
     private final Class<T> clazz = super.getDomainClass();
     private final JpaEntityInformation<T, ?> entityInformation;
 
-
     public BillieRepositoryImpl(JpaEntityInformation<T, ?> efm, EntityManager em) {
         super(efm, em);
         this.entityInformation = efm;

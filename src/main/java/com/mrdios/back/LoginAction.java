@@ -48,6 +48,7 @@ public class LoginAction {
      */
     @RequestMapping("/index")
     public String index(Model model) {
+        model.addAttribute("menus", "");
         return "index";
     }
 

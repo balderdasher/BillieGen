@@ -9,6 +9,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
@@ -56,6 +57,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         String exceptionName = e.getClass().getName();
+        UsernamePasswordCaptchaToken tk = (UsernamePasswordCaptchaToken) token;
         String message;
         if (UnknownAccountException.class.getName().equals(exceptionName)
                 || IncorrectCredentialsException.class.getName().equals(exceptionName)) {
@@ -64,9 +66,20 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
             message = e.getMessage();
         } else {
             message = "系统请您稍后再试.";
-            logger.error("system login exception::{}", e);
+            logger.error("Exception occurred when the user '{}' attempt to login::{}", tk.getUsername(), e);
         }
         request.setAttribute(DEFAULT_MESSAGE_PARAM, message);
+        recordLoginLog();
         return super.onLoginFailure(token, e, request, response);
+    }
+
+    @Override
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+        recordLoginLog();
+        return super.onLoginSuccess(token, subject, request, response);
+    }
+
+    private void recordLoginLog() {
+        // TODO: 2017/11/30 0030 record login log.
     }
 }

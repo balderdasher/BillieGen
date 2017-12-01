@@ -155,8 +155,6 @@ public class Menu extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Menu{" +
-                "menuName='" + menuName + '\'' +
-                '}';
+        return menuName;
     }
 }
