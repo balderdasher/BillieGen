@@ -58,7 +58,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="index.html">
-        <img src="../assets/pages/img/logo-big.png" alt=""/> </a>
+        <img src="/assets/pages/img/logo-big.png" alt=""/> </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -73,31 +73,32 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <div class="form-group">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-            <label class="control-label visible-ie8 visible-ie9">Username</label>
+            <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.username'/]</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off"
                    placeholder="[@s.m 'billie.common.username'/]" name="username" value="${username!}"/></div>
         <div class="form-group">
-            <label class="control-label visible-ie8 visible-ie9">Password</label>
+            <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.password'/]</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off"
                    placeholder="[@s.m 'billie.common.password'/]" name="password" value="${password!}"/></div>
         <div class="form-group">
-            <label class="control-label visible-ie8 visible-ie9">Captcha</label>
+            <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.captcha'/]</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off"
                    style="text-transform:uppercase;" placeholder="[@s.m 'billie.common.captcha'/]" name="captcha">
         </div>
         <div class="form-group">
-            <label class="control-label visible-ie8 visible-ie9">Captcha</label>
+            <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.captcha'/]</label>
             <img src="${base}/captcha.img" onclick="$(this).attr('src','${base}/captcha.img?t='+Math.random())">
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn green uppercase">Login</button>
+            <button type="submit" class="btn green uppercase">[@s.m 'billie.common.login'/]</button>
             <label class="rememberme check mt-checkbox mt-checkbox-outline">
-                <input type="checkbox" name="rememberMe" value="1"/>Remember
+                <input type="checkbox" name="rememberMe" value="1"/>[@s.m 'billie.common.remember'/]
                 <span></span>
             </label>
-            <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+            <a href="javascript:;" id="forget-password" class="forget-password">[@s.m
+                'billie.common.forgotPassword'/]</a>
         </div>
-        <div class="login-options">
+        <!--<div class="login-options">
             <h4>Or login with</h4>
             <ul class="social-icons">
                 <li>
@@ -113,24 +114,24 @@ License: You must have a valid license purchased only from themeforest(the above
                     <a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
                 </li>
             </ul>
-        </div>
+        </div>-->
         <div class="create-account">
             <p>
-                <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
+                <a href="javascript:;" id="register-btn" class="uppercase">[@s.m 'billie.common.register'/]</a>
             </p>
         </div>
     </form>
     <!-- END LOGIN FORM -->
     <!-- BEGIN FORGOT PASSWORD FORM -->
     <form class="forget-form" action="index.html" method="post">
-        <h3 class="font-green">Forget Password ?</h3>
-        <p> Enter your e-mail address below to reset your password. </p>
+        <h3 class="font-green">[@s.m 'billie.common.forgotPassword'/]</h3>
+        <p> [@s.m 'billie.common.forgotPassword.tip'/] </p>
         <div class="form-group">
             <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email"
                    name="email"/></div>
         <div class="form-actions">
-            <button type="button" id="back-btn" class="btn green btn-outline">Back</button>
-            <button type="submit" class="btn btn-success uppercase pull-right">Submit</button>
+            <button type="button" id="back-btn" class="btn green btn-outline">[@s.m 'billie.common.back'/]</button>
+            <button type="submit" class="btn btn-success uppercase pull-right">[@s.m 'billie.common.submit'/]</button>
         </div>
     </form>
     <!-- END FORGOT PASSWORD FORM -->
