@@ -22,8 +22,8 @@ spring:
       - classpath:/resources/
       - classpath:/static/
       - classpath:/public/
-      - file:C:/xinhuanet/projects/billiegen/metronic/
-#      - file:G:/mrdios/projects/billiegen/resource/metronic/
+#      - file:C:/xinhuanet/projects/billiegen/metronic/
+      - file:G:/mrdios/projects/billiegen/resource/metronic/
   # custom favicon
   mvc:
     favicon:
@@ -44,8 +44,8 @@ spring:
     content-type: text/html
     cache: false
     charset: UTF-8
-    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic
-#    template-loader-path: file:G:/mrdios/projects/billiegen/resource/metronic
+#    template-loader-path: file:C:/xinhuanet/projects/billiegen/metronic
+    template-loader-path: file:G:/mrdios/projects/billiegen/resource/metronic
     suffix: .html
     check-template-location: true
     expose-request-attributes: true
@@ -132,11 +132,11 @@ billie:
     successUrl: ${billie.back.path}/index
     unauthorizedUrl: /403
     filterChainDefinitionMap:
+      /admin/favicon.ico: anon
       /favicon.ico: anon
       /static/**: anon
       /assets/**: anon
       /admin/login: anon
-#      /admin/logout: logout
       /admin/**: user
       /**: anon
     filter-config:

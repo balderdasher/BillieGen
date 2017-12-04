@@ -28,28 +28,41 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ShiroSecurityServiceImpl extends BaseServiceImpl<AdminDao, Admin, String> implements SecurityService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShiroSecurityServiceImpl.class);
+    private Principal principal;
+
+    private final AdminDao adminDao;
+
     @Autowired
-    private AdminDao adminDao;
+    public ShiroSecurityServiceImpl(AdminDao adminDao) {
+        this.adminDao = adminDao;
+    }
 
     @Override
     public Principal getLoginPrincipal() {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
-            return (Principal) subject.getPrincipal();
+            this.principal = (Principal) subject.getPrincipal();
         }
-        return null;
+        return this.principal;
     }
 
     @Override
-    public Principal getAuthorizationPrincipal(Principal principal) {
+    public Boolean isPrincipalAuthorized() {
+        return this.principal.getAuthorized();
+    }
+
+    @Override
+    public Principal doGetAuthorizedPrincipal() {
         String username = principal.getUsername();
         Set<String> roles = principal.getRoles();
         Set<String> rights = principal.getRights();
         Set<Menu> menus = principal.getMenus();
         // clear for another Authorization
-        roles.clear();
-        rights.clear();
-        menus.clear();
+        if (isPrincipalAuthorized()) {
+            roles.clear();
+            rights.clear();
+            menus.clear();
+        }
         Admin user = adminDao.findAdminByUsernameEquals(username);
 
         user.getRoleSet().forEach(role -> {

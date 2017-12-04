@@ -1,18 +1,19 @@
 package com.mrdios.back;
 
+import com.billiegen.common.security.shiro.BillieShiroRealm;
 import com.billiegen.common.security.shiro.bean.Principal;
+import com.billiegen.system.service.SecurityService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author CodePorter
@@ -25,18 +26,27 @@ public class LoginAction {
     @Value("${billie.back.path}")
     private String adminPath;
 
+    private final SecurityService securityService;
+
+    private final BillieShiroRealm billieShiroRealm;
+
+    @Autowired
+    public LoginAction(SecurityService securityService, BillieShiroRealm authorizingRealm) {
+        this.securityService = securityService;
+        this.billieShiroRealm = authorizingRealm;
+    }
+
     @GetMapping("/login")
-    public String toLogin() {
-        Subject subject = SecurityUtils.getSubject();
-        Principal principal = (Principal) subject.getPrincipal();
+    public String toLogin(Model model) {
+        Principal principal = securityService.getLoginPrincipal();
         if (principal != null) {
-            return home();
+            return index(model);
         }
         return "page_user_login_1";
     }
 
     @PostMapping("/login")
-    public String login(Model model, HttpServletRequest request) {
+    public String login() {
         return "page_user_login_1";
     }
 
@@ -46,15 +56,15 @@ public class LoginAction {
      * @param model
      * @return
      */
-    @RequestMapping("/index")
+    @RequestMapping({"/index", ""})
     public String index(Model model) {
-        model.addAttribute("menus", "");
+        Principal principal = securityService.getLoginPrincipal();
+        // 第一次进入首页时手动获取授权以便设置菜单、角色、权限等信息
+        if (!securityService.isPrincipalAuthorized()) {
+            billieShiroRealm.getAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+        }
+        model.addAttribute("menus", principal.getMenus());
         return "index";
-    }
-
-    @RequestMapping("")
-    public String home() {
-        return "redirect:" + adminPath + "/index";
     }
 
     /**

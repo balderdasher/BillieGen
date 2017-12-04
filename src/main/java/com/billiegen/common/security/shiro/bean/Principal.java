@@ -18,6 +18,7 @@ public class Principal implements Serializable {
     private String username;
     private String email;
     private String name;
+    private Boolean isAuthorized = Boolean.FALSE;
     private Set<String> roles = new HashSet<>();
     private Set<String> rights = new HashSet<>();
     private Set<Menu> menus = new HashSet<>();
@@ -26,7 +27,7 @@ public class Principal implements Serializable {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.name = user.getRealname();
+        this.name = user.getNickname();
     }
 
     public String getId() {
@@ -59,6 +60,14 @@ public class Principal implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getAuthorized() {
+        return isAuthorized;
+    }
+
+    public void setAuthorized(Boolean authorized) {
+        isAuthorized = authorized;
     }
 
     public Set<String> getRoles() {

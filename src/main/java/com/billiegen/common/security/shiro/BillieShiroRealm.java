@@ -61,22 +61,50 @@ public class BillieShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 授权
+     * 授权：无授权缓存时调用此方法以获取授权信息，理论上只会调用一次，之后的授权信息将会从缓存中获取
      *
      * @param principalCollection
      * @return
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Principal principal = (Principal) getAvailablePrincipal(principalCollection);
-        principal = securityService.getAuthorizationPrincipal(principal);
+    public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        Principal principal = securityService.doGetAuthorizedPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         addRbacAuthorization(authorizationInfo, principal);
+        principal.setAuthorized(true);
         return authorizationInfo;
     }
 
     private void addRbacAuthorization(SimpleAuthorizationInfo authorization, Principal principal) {
         authorization.addRoles(principal.getRoles());
         authorization.addStringPermissions(principal.getRights());
+    }
+
+    /**
+     * 获取授权信息：无授权缓存时将会调用{@link AuthorizingRealm#doGetAuthorizationInfo(PrincipalCollection)}
+     * 方法读取授权信息并放入缓存中，之后从缓存中获取
+     * <p>
+     * 修改为<code>public</code>以便手动调用获取授权并缓存
+     *
+     * @param principals principals
+     * @return 从数据库获得并设置的角色、权限、菜单等信息
+     */
+    @Override
+    public AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
+        return super.getAuthorizationInfo(principals);
+    }
+
+    /**
+     * 清空授权缓存，改为public以便在别处手动调用，如重新设置管理员角色、权限、菜单时清空缓存，再次获取授权时会重新调用
+     * {@link AuthorizingRealm#doGetAuthorizationInfo(PrincipalCollection)}方法从数据库读取并设置授权信息
+     *
+     * @param principals
+     */
+    @Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+        Principal principal = securityService.getLoginPrincipal();
+        principal.setAuthorized(false);
+
     }
 }

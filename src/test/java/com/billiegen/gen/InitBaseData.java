@@ -11,7 +11,6 @@ import com.billiegen.system.entity.Menu;
 import com.billiegen.system.entity.Right;
 import com.billiegen.system.entity.Role;
 import com.billiegen.system.enums.Sex;
-import com.billiegen.system.service.AdminService;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,8 +34,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author CodePorter
  * @date 2017-11-28
  */
-//@Transactional
-//@Rollback(value = false)
+@Transactional
+@Rollback(value = false)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class InitBaseData {
@@ -42,8 +43,6 @@ public class InitBaseData {
 
     @Autowired
     private AdminDao adminDao;
-    @Autowired
-    private AdminService adminService;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -72,9 +71,7 @@ public class InitBaseData {
 
     @Test
     public void verifyBaseData() {
-//        Admin admin = adminDao.findAdminByUsernameEquals("admin");
-//        Admin admin = adminDao.getOne("1d0dac6ddb24454590e1dfda42a8a2f0");
-        Admin admin = adminService.findByUsername("admin");
+        Admin admin = adminDao.findAdminByUsernameEquals("admin");
         logger.info("超级管理员 [{}] is exist...", admin.getUsername());
         Set<Role> roles = admin.getRoleSet();
         Set<Right> rights = new HashSet<>();
@@ -248,12 +245,15 @@ public class InitBaseData {
         } else {
             admin = new Admin();
             admin.setUsername("admin");
+            admin.setNickname("CodePorter");
+            admin.setRealname("CodePorter");
             admin.setPassword(PasswordHelper.entryptPassword("123456"));
             admin.setSuper(true);
             admin.setSex(Sex.MALE);
             admin.setEmail("balderdasher@msn.com");
             admin.setMobileNumber("13366383563");
             admin.setWebsiteUrl("http://www.mrdios.com");
+            admin.setOccupation("CodePorter");
             logger.info("管理员 [超级管理员] is not exist, create new one.....");
         }
         admin.setRoleSet(roleSet);
