@@ -105,6 +105,5 @@ public class BillieShiroRealm extends AuthorizingRealm {
         super.clearCachedAuthorizationInfo(principals);
         Principal principal = securityService.getLoginPrincipal();
         principal.setAuthorized(false);
-
     }
 }

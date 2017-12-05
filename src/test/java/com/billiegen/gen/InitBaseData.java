@@ -109,31 +109,31 @@ public class InitBaseData {
         int menuCodeTwo = Integer.valueOf(menuDao.getNextMenuCode(2));
         int menuCodeThree = Integer.valueOf(menuDao.getNextMenuCode(3));
 
-        Menu menuOne = menuDao.findByMenuName("系统设置");
-        if (menuOne != null) {
+        Menu systemConfigMenu = menuDao.findByMenuName("系统设置");
+        if (systemConfigMenu != null) {
             logger.info("菜单 [系统设置] is exist.....");
         } else {
-            menuOne = new Menu();
-            menuOne.setMenuName("系统设置");
-            menuOne.setMenuLevel(1);
-            menuOne.setMenuLink("/sys");
-            menuOne.setMenuCode(menuCodeOne + "");
-            menuOne.setParentMenu(rootMenu);
-            menuDao.save(menuOne);
+            systemConfigMenu = new Menu();
+            systemConfigMenu.setMenuName("系统设置");
+            systemConfigMenu.setMenuLevel(1);
+            systemConfigMenu.setMenuLink("/sys");
+            systemConfigMenu.setMenuCode(menuCodeOne++ + "");
+            systemConfigMenu.setParentMenu(rootMenu);
+            menuDao.save(systemConfigMenu);
             logger.info("菜单 [系统设置] is not exist, create new one.....");
         }
 
-        Menu menuTwo = menuDao.findByMenuName("基础管理");
-        if (menuTwo != null) {
+        Menu sysBaseMenu = menuDao.findByMenuName("基础管理");
+        if (sysBaseMenu != null) {
             logger.info("菜单 [基础管理] is exist.....");
         } else {
-            menuTwo = new Menu();
-            menuTwo.setMenuName("基础管理");
-            menuTwo.setMenuLevel(2);
-            menuTwo.setMenuLink("");
-            menuTwo.setMenuCode(menuCodeTwo + "");
-            menuTwo.setParentMenu(menuOne);
-            menuDao.save(menuTwo);
+            sysBaseMenu = new Menu();
+            sysBaseMenu.setMenuName("基础管理");
+            sysBaseMenu.setMenuLevel(2);
+            sysBaseMenu.setMenuLink("");
+            sysBaseMenu.setMenuCode(menuCodeTwo++ + "");
+            sysBaseMenu.setParentMenu(systemConfigMenu);
+            menuDao.save(sysBaseMenu);
             logger.info("菜单 [基础管理] is not exist, create new one.....");
         }
         Menu adminMenu = menuDao.findByMenuName("管理员管理");
@@ -145,7 +145,7 @@ public class InitBaseData {
             adminMenu.setMenuLevel(3);
             adminMenu.setMenuLink("/sys/admin");
             adminMenu.setMenuCode(menuCodeThree++ + "");
-            adminMenu.setParentMenu(menuTwo);
+            adminMenu.setParentMenu(sysBaseMenu);
             menuDao.save(adminMenu);
             logger.info("菜单 [管理员管理] is not exist, create new one.....");
         }
@@ -159,7 +159,7 @@ public class InitBaseData {
             roleMenu.setMenuLevel(3);
             roleMenu.setMenuLink("/sys/role");
             roleMenu.setMenuCode(menuCodeThree++ + "");
-            roleMenu.setParentMenu(menuTwo);
+            roleMenu.setParentMenu(sysBaseMenu);
             menuDao.save(roleMenu);
             logger.info("菜单 [角色管理] is not exist, create new one.....");
         }
@@ -173,7 +173,7 @@ public class InitBaseData {
             rightMenu.setMenuLevel(3);
             rightMenu.setMenuLink("/sys/right");
             rightMenu.setMenuCode(menuCodeThree++ + "");
-            rightMenu.setParentMenu(menuTwo);
+            rightMenu.setParentMenu(sysBaseMenu);
             menuDao.save(rightMenu);
             logger.info("菜单 [权限管理] is not exist, create new one.....");
         }
@@ -187,9 +187,63 @@ public class InitBaseData {
             menuMenu.setMenuLevel(3);
             menuMenu.setMenuLink("/sys/menu");
             menuMenu.setMenuCode(menuCodeThree++ + "");
-            menuMenu.setParentMenu(menuTwo);
+            menuMenu.setParentMenu(sysBaseMenu);
             menuDao.save(menuMenu);
             logger.info("菜单 [权限管理] is not exist, create new one.....");
+        }
+
+        Menu logSystemMenu = menuDao.findByMenuName("日志系统");
+        if (logSystemMenu != null) {
+            logger.info("菜单 [日志系统] is exist.....");
+        } else {
+            logSystemMenu = new Menu();
+            logSystemMenu.setMenuName("日志系统");
+            logSystemMenu.setMenuLevel(1);
+            logSystemMenu.setMenuLink("/log");
+            logSystemMenu.setMenuCode(menuCodeOne++ + "");
+            logSystemMenu.setParentMenu(rootMenu);
+            menuDao.save(logSystemMenu);
+            logger.info("菜单 [日志系统] is not exist, create new one.....");
+        }
+
+        Menu logMenuTwo = menuDao.findByMenuName("日志管理");
+        if (logMenuTwo != null) {
+            logger.info("菜单 [日志管理] is exist.....");
+        } else {
+            logMenuTwo = new Menu();
+            logMenuTwo.setMenuName("日志管理");
+            logMenuTwo.setMenuLevel(2);
+            logMenuTwo.setMenuLink("");
+            logMenuTwo.setMenuCode(menuCodeTwo++ + "");
+            logMenuTwo.setParentMenu(logSystemMenu);
+            menuDao.save(logMenuTwo);
+            logger.info("菜单 [日志管理] is not exist, create new one.....");
+        }
+        Menu loginLogMenu = menuDao.findByMenuName("登录日志");
+        if (loginLogMenu != null) {
+            logger.info("菜单 [登录日志] is exist.....");
+        } else {
+            loginLogMenu = new Menu();
+            loginLogMenu.setMenuName("登录日志");
+            loginLogMenu.setMenuLevel(3);
+            loginLogMenu.setMenuLink("/log/loginlog");
+            loginLogMenu.setMenuCode(menuCodeThree++ + "");
+            loginLogMenu.setParentMenu(logMenuTwo);
+            menuDao.save(loginLogMenu);
+            logger.info("菜单 [登录日志] is not exist, create new one.....");
+        }
+        Menu accessLogMenu = menuDao.findByMenuName("请求日志");
+        if (accessLogMenu != null) {
+            logger.info("菜单 [请求日志] is exist.....");
+        } else {
+            accessLogMenu = new Menu();
+            accessLogMenu.setMenuName("请求日志");
+            accessLogMenu.setMenuLevel(3);
+            accessLogMenu.setMenuLink("/log/accessLog");
+            accessLogMenu.setMenuCode(menuCodeThree++ + "");
+            accessLogMenu.setParentMenu(logMenuTwo);
+            menuDao.save(accessLogMenu);
+            logger.info("菜单 [请求日志] is not exist, create new one.....");
         }
     }
 
