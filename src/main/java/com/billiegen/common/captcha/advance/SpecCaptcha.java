@@ -13,6 +13,8 @@ import java.io.OutputStream;
  * @version:1.0
  */
 public class SpecCaptcha extends Captcha {
+    private String bgColor;
+
     public SpecCaptcha() {
     }
 
@@ -26,9 +28,19 @@ public class SpecCaptcha extends Captcha {
         this.len = len;
     }
 
+    public SpecCaptcha(int width, int height, int len, String bgColor) {
+        this(width, height, len);
+        this.bgColor = bgColor;
+    }
+
     public SpecCaptcha(int width, int height, int len, Font font) {
         this(width, height, len);
         this.font = font;
+    }
+
+    public SpecCaptcha(int width, int height, int len, Font font, String bgColor) {
+        this(width, height, len, font);
+        this.bgColor = bgColor;
     }
 
     /**
@@ -55,7 +67,16 @@ public class SpecCaptcha extends Captcha {
             AlphaComposite ac3;
             Color color;
             int len = strs.length;
-            g.setColor(Color.WHITE);
+            //利用指定颜色填充背景
+            Color bg = Color.WHITE;
+            if (bgColor != null && !"".equals(bgColor) && bgColor.startsWith("#")) {
+                try {
+                    bg = Color.decode(bgColor);
+                } catch (Exception e) {
+                    // do nothing and bg will be set to white.
+                }
+            }
+            g.setColor(bg);
             g.fillRect(0, 0, width, height);
             // 随机画干扰的蛋蛋
             for (int i = 0; i < 15; i++) {

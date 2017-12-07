@@ -2,6 +2,7 @@ package com.billiegen.common.servlet;
 
 import com.billiegen.common.captcha.advance.Captcha;
 import com.billiegen.common.captcha.advance.GifCaptcha;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,8 +30,10 @@ public class CaptchaServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         response.setContentType("image/gif");
+        String bgColor = request.getParameter("bg");
+        bgColor = StringUtils.prependIfMissing(bgColor, "#");
 
-        Captcha captcha = new GifCaptcha(146, 33, 5);
+        Captcha captcha = new GifCaptcha(125, 41, 4, bgColor);
         try {
             OutputStream out = response.getOutputStream();
             captcha.out(out);

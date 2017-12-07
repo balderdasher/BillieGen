@@ -12,6 +12,8 @@ import java.io.OutputStream;
  * @version:1.0
  */
 public class GifCaptcha extends Captcha {
+    private String bgColor;
+
     public GifCaptcha() {
     }
 
@@ -25,9 +27,19 @@ public class GifCaptcha extends Captcha {
         this.len = len;
     }
 
+    public GifCaptcha(int width, int height, int len, String bgColor) {
+        this(width, height, len);
+        this.bgColor = bgColor;
+    }
+
     public GifCaptcha(int width, int height, int len, Font font) {
         this(width, height, len);
         this.font = font;
+    }
+
+    public GifCaptcha(int width, int height, int len, Font font, String bgColor) {
+        this(width, height, len, font);
+        this.bgColor = bgColor;
     }
 
     @Override
@@ -76,7 +88,15 @@ public class GifCaptcha extends Captcha {
         //Graphics2D g2d=image.createGraphics();
         Graphics2D g2d = (Graphics2D) image.getGraphics();
         //利用指定颜色填充背景
-        g2d.setColor(Color.WHITE);
+        Color bg = Color.WHITE;
+        if (bgColor != null && !"".equals(bgColor) && bgColor.startsWith("#")) {
+            try {
+                bg = Color.decode(bgColor);
+            } catch (Exception e) {
+                // do nothing and bg will be set to white.
+            }
+        }
+        g2d.setColor(bg);
         g2d.fillRect(0, 0, width, height);
         AlphaComposite ac3;
         int h = height - ((height - font.getSize()) >> 1);
