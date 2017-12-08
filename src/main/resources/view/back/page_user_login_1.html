@@ -42,12 +42,13 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css"/>
+    <link href="${base}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css"/>
     <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="../assets/pages/css/login.min.css" rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL STYLES -->
+    <link href="${base}/back/css/billie.css" rel="stylesheet" type="text/css"/>
     <!-- BEGIN THEME LAYOUT STYLES -->
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="${base}/favicon.ico"/>
@@ -83,14 +84,15 @@ License: You must have a valid license purchased only from themeforest(the above
             <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.password'/]</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off"
                    placeholder="[@s.m 'billie.common.password'/]" name="password" value="${password!}"/></div>
-        <div class="form-group">
+        <div class="input-group">
             <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.captcha'/]</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off"
                    style="text-transform:uppercase;" placeholder="[@s.m 'billie.common.captcha'/]" name="captcha">
-        </div>
-        <div class="form-group">
-            <label class="control-label visible-ie8 visible-ie9">[@s.m 'billie.common.captcha'/]</label>
-            <img src="${base}/captcha.img" onclick="$(this).attr('src','${base}/captcha.img?t='+Math.random())">
+            <span class="input-group-addon" style="padding: 0;border: 1px solid #dde3ec;">
+                <img id="captcha" src="${base}/captcha.img?bg=dde3ec"
+                     onclick="$(this).attr('src','${base}/captcha.img?bg=dde3ec&t='+Math.random())"
+                     style="width: 125px;height: 41px;">
+            </span>
         </div>
         <div class="form-actions">
             <button type="submit" class="btn green uppercase">[@s.m 'billie.common.login'/]</button>
